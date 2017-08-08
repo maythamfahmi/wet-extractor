@@ -22,3 +22,7 @@ Log time              Caller class/method                                       
 08-08-2017 21:42:34   Download.Downloader -> isFileExsit                            ? 
 08-08-2017 21:44:29   Download.Downloader -> isFileExsit                            ? 
 08-08-2017 21:50:41   Download.Downloader -> isFileDownloaded                       CC-MAIN-20170720121902-20170720141902-00000.warc.wet.gz (The system cannot find the file specified) 
+08-08-2017 22:20:49   App -> lambda$app$0                                           Unexpected end of ZLIB input stream 
+08-08-2017 22:20:49   App -> lambda$app$0                                           Unexpected end of ZLIB input stream 
+08-08-2017 22:21:20   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 22:21:21   Download.Downloader -> isFileExsit                            ? 

@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * By Maytham on 01-09-2016.
+ * Wet-extractor
+ * Developer Maytham on 01-09-2017
+ * 2017 © Copyright | ITBackyard ApS
  */
 class DataStructure {
 
@@ -46,21 +48,11 @@ class DataStructure {
             }
         }
 
-        //LogHelper.staticsList.add("WetContent file: " + readDataFile);
-        //LogHelper.staticsList.add("WetContent size: " + wetContents.size());
-        //LogHelper.doLog(LogHelper.getCurrentMethodName());
-
         return wetContents;
     }
 
     static List<String> swearWord(String fileName) {
-
-        List<String> lst = FileHelper.linesReader(fileName);
-
-        //LogHelper.staticsList.add("Swear words total: " + lst.size());
-        //LogHelper.doLog(LogHelper.getCurrentMethodName());
-
-        return lst;
+        return FileHelper.linesReader(fileName);
     }
 
 }

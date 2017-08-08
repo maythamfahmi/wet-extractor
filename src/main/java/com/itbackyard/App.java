@@ -3,6 +3,7 @@ package com.itbackyard;
 import com.itbackyard.Entity.WetContent;
 import com.itbackyard.Helper.ContentFilter;
 import com.itbackyard.Helper.FileHelper;
+import com.itbackyard.Helper.LogData;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -19,49 +20,46 @@ import java.util.stream.Collectors;
  */
 class App extends DataStructure {
 
-    //static final String DATA_WET_SOURCE_PATH = "resources/wet";
-    private static final Path DATA_WET_SOURCE_PATH = Paths.get(Const.res + "/wet");
-    private static final String SWEAR_WORDS = Const.res + "/lists/words/swearwords.txt";
-    private static final Path PROCESSED_FILES = Paths.get(Const.res + "/processed/already.txt");
-    private static final Path STATISTICS_LOG = Paths.get(Const.res + "/log/statics.txt");
-    private static final Path PROCESS_LOG = Paths.get(Const.res + "/log/log.txt");
-    static List<String> swearWordsList;
-    private static Calendar cal = Calendar.getInstance();
-    private static SimpleDateFormat sdf = new SimpleDateFormat("YYMMddHHmmss");
-
-    // Customized area
-    private static final Path SAVE_SEARCH_FILEAS = Paths.get(
+    private final LogData LOG = LogData.getInstance();
+    private final Calendar cal = Calendar.getInstance();
+    private final SimpleDateFormat sdf = new SimpleDateFormat("YYMMddHHmmss");
+    private final Path DOWNLOAD_FILE = Paths.get(Const.res + "/wet/files/");
+    private final String SWEAR_WORDS = Const.res + "/lists/words/swearwords.txt";
+    private List<String> swearWordsList;
+    private final Path SAVE_SEARCH_FILEAS = Paths.get(
             "resources/output/master_" + sdf.format(cal.getTime()) + ".txt");
-    // if empty all domains white, otherwise it look for link containing
-    // singleton domain only like:
-    // bbc.co.uk/
-    // cnn.com/
+
+    /**
+     * <b>NOTE:</b><br>
+     * if empty all domains white, otherwise it look for link containing
+     * singleton domain only like:<br>
+     * bbc.co.uk<br>
+     * cnn.com<br>
+     */
     private static final String whiteDomain = "";
 
     public static void main(String[] args) throws IOException, URISyntaxException {
-        // Swear word list crates onces
+        System.out.println("Processing...");
+        new App().app();
+    }
+
+    private void app() throws IOException, URISyntaxException {
         swearWordsList = DataStructure.swearWord(SWEAR_WORDS);
 
-        /*FileHelper.listSourceFiles(DATA_WET_SOURCE_PATH)
+        FileHelper.listSourceFiles(DOWNLOAD_FILE, "*.{warc.wet.gz}")
                 .forEach(fileName -> {
                     try {
-                        String fn = fileName.getFileName().toString();
-                        if (!FileHelper.isFileAlreadyProcessed(fn, PROCESSED_FILES)) {
-                            doStart(fileName);
-                        }
+                        System.out.println(fileName);
+                        doStart(fileName);
                     } catch (IOException | URISyntaxException e) {
+                        LOG.write(LOG.getCurrentMethodName(), e.getMessage());
                         e.printStackTrace();
                     }
-                });*/
+                });
 
     }
 
-    private static void doStart(Path fileName) throws IOException, URISyntaxException {
-
-        String fn = fileName.getFileName().toString();
-
-        //LogHelper.doLog(LogHelper.getCurrentMethodName(), "Extracting Started: " + fn);
-
+    private void doStart(Path fileName) throws IOException, URISyntaxException {
         // extracting wet content
         List<WetContent> wetContents = DataStructure.wetExtractor(fileName.toString());
 

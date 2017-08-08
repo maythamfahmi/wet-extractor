@@ -18,40 +18,50 @@ import java.util.stream.Stream;
  */
 public class FileHelper {
 
-    private static LogData log = LogData.getInstance();
+    private final static LogData LOG = LogData.getInstance();
 
-    public static List<Path> listSourceFiles(Path dir) throws IOException {
+    /**
+     * To process file with text extention than pass "*.{txt}"<br>
+     * to <code>fileType</code>.
+     * <br>
+     * Txt: "*.{txt}"<br>
+     * Wet: "*.{warc.wet.gz}"
+     *
+     * @param dir
+     * @param fileType
+     * @return
+     * @throws IOException
+     */
+    public static List<Path> listSourceFiles(Path dir, String fileType) throws IOException {
+
         List<Path> result = new ArrayList<>();
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, "*.{txt}")) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, fileType)) {
             for (Path entry : stream) {
                 result.add(entry);
             }
-        } catch (DirectoryIteratorException ex) {
-            // I/O error encounted during the iteration, the cause is an IOException
-            throw ex.getCause();
+        } catch (DirectoryIteratorException e) {
+            LOG.write(LOG.getCurrentMethodName(), e.getMessage());
+            //throw e.getCause();
+            e.printStackTrace();
         }
         return result;
     }
 
-    /*public static List<Path> listSourceFiles(Path path) throws IOException {
-        List<Path> list = new ArrayList<>();
-
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(path, "*.{warc.wet.gz}")) {
-            for (Path entry : stream) {
-                list.add(entry);
-            }
-        } catch (DirectoryIteratorException e) {
-            e.printStackTrace();
-        }
-        return list;
-    }*/
-
+    /**
+     * Read download list with limiting the urls.
+     * <br>
+     * Set <code>maxUrls</code> to limit the number of urls
+     *
+     * @param downloadList
+     * @param maxUrls
+     * @return
+     */
     public static Stream<String> urlList(String downloadList, int maxUrls) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(downloadList));
             return reader.lines().limit(maxUrls);
         } catch (IOException e) {
-            log.write(log.getCurrentMethodName(), e.getMessage());
+            LOG.write(LOG.getCurrentMethodName(), e.getMessage());
             e.printStackTrace();
             return Stream.empty();
         }
@@ -119,19 +129,6 @@ public class FileHelper {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void createLog(Path fileName, List<LogData> list) {
-
-        List<String> logList = new ArrayList<>();
-
-        list.forEach(a -> logList.add(a.toString()));
-
-        createFile(fileName, logList);
-    }
-
-    public static void staticsLog(Path fileName, List<String> list) {
-        createFile(fileName, list);
     }
 
     private static void isFolderExist(Path fileName) {
