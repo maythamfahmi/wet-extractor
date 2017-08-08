@@ -7,6 +7,7 @@ package com.itbackyard;
  */
 public class Const {
 
-    public static final String res = "src/main/resources";
+    public static final String res = "src/main/resources/";
+    public static final String resTest = "src/test/resources/";
 
 }

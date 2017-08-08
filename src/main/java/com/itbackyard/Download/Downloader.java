@@ -2,76 +2,86 @@ package com.itbackyard.Download;
 
 import com.itbackyard.Const;
 import com.itbackyard.Helper.FileHelper;
+import com.itbackyard.Helper.LogData;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
+import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 /**
- * Created by Maytham on 15-05-2016.
+ * Wet-extractor
+ * Developer Maytham on 15-05-2016
+ * Updated Maytham 08-08-2017
+ * 2017 © Copyright | ITBackyard ApS
  */
 public class Downloader {
 
-    private static String baseUrl = "https://commoncrawl.s3.amazonaws.com/";
-    private static String downloadFolder = Const.res + "/files/wet/";
-    private static int pools = 2;
+    private final String BASE_URL = "https://commoncrawl.s3.amazonaws.com/";
+    private final String DOWNLOAD_FILE = Const.res + "/wet/files/";
+    private final String DOWNLOADED = Const.res + "/wet/downloaded.txt";
+    private final String URL_DOWNLOAD_LIST = Const.res + "/wet/url_download_list.txt";
+    private final LogData LOG = LogData.getInstance();
+    private final int CORES = Runtime.getRuntime().availableProcessors();
+    private final int POOLS = CORES;
 
-    private static String urlList = Const.res + "/wet/wet_download_list.txt";
-
-    private static FileHelper fileHelper = new FileHelper();
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         System.out.println("Staring downloading...");
-        //Downloader.doStart(urlList, 1);
-        Stream<String> listOfUrls = fileHelper.urlList(urlList, 2);
-        listOfUrls.limit(2).forEach(System.out::println);
+        Downloader d = new Downloader();
+        d.doStart(d.URL_DOWNLOAD_LIST, 2);
     }
 
-    public static void doStart(String downloadList, int maxUrls) {
+    /**
+     * Download wet common crawl files from Amazon S3
+     *
+     * @param downloadList
+     * @param maxUrls
+     */
+    public void doStart(String downloadList, int maxUrls) {
 
-        ExecutorService pool = Executors.newFixedThreadPool(pools);
+        ExecutorService pool = Executors.newFixedThreadPool(POOLS);
 
-        Stream<String> listOfUrls = FileHelper.urlList(downloadList, maxUrls);
+        Stream<String> streamOfUrl = FileHelper.urlList(downloadList, maxUrls);
 
-        listOfUrls.limit(2).forEach(System.out::println);
-
-
-        //listOfUrls.forEach(fullUrl -> {
-        //System.out.println(fullUrl);
-            /*String url = baseUrl + fullUrl;
+        streamOfUrl.forEach(fullUrl -> {
+            String url = BASE_URL + fullUrl;
             String filename = getFilenameFromUrl(url);
-            if (!isFileDownloaded(downloadFolder, filename)) {
+            if (!isFileExsit(DOWNLOAD_FILE + filename) ||
+                    !isFileDownloaded(filename, DOWNLOADED)) {
                 pool.submit(new DownloadTask(url));
                 try {
                     pool.awaitTermination(1000, TimeUnit.MILLISECONDS);
                 } catch (InterruptedException e) {
+                    LOG.write(LOG.getCurrentMethodName(), e.getMessage());
                     e.printStackTrace();
                 }
-            }*/
-        //});
+            }
+        });
 
-        //pool.shutdown();
+        pool.shutdown();
 
         /*try {
             pool.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
             //pool.awaitTermination(1, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
+            LOG.write(LOG.getCurrentMethodName(), e.getMessage());
             e.printStackTrace();
         }*/
     }
 
-    private static class DownloadTask implements Runnable {
+    class DownloadTask implements Runnable {
 
         private String url;
 
-        public DownloadTask(String url) {
+        DownloadTask(String url) {
             this.url = url;
         }
 
@@ -81,33 +91,71 @@ public class Downloader {
         }
     }
 
-    public static void download(String urlRaw) {
+    protected void download(String urlRaw) {
         try {
             String filename = getFilenameFromUrl(urlRaw);
             URL url = new URL(urlRaw);
-            System.out.println("Downloading: " + filename);
-            InputStream in = url.openStream();
-            Files.copy(in, Paths.get(downloadFolder + filename), StandardCopyOption.REPLACE_EXISTING);
-            in.close();
-            System.out.print(" Done!");
+            System.out.println("Downloading: " + urlRaw);
+            InputStream inputStream = url.openStream();
+            Files.copy(
+                    inputStream,
+                    Paths.get(DOWNLOAD_FILE + filename),
+                    StandardCopyOption.REPLACE_EXISTING
+            );
+            inputStream.close();
+            System.out.println("Saving: " + filename);
+            addToDownloaded(filename);
         } catch (IOException e) {
+            LOG.write(LOG.getCurrentMethodName(), e.getMessage());
             e.printStackTrace();
         }
     }
 
-    public static String getFilenameFromUrl(String url) {
+    protected String getFilenameFromUrl(String url) {
         int pos = url.lastIndexOf("wet/") + 4;
-        String filename = url.substring(pos, url.length());
-        return filename;
+        return url.substring(pos, url.length());
     }
 
-    public static boolean isFileDownloaded(String downloadPath, String fileName) {
-        File file = new File(downloadPath + fileName);
+    protected boolean isFileExsit(String fileName) {
+        File file = new File(fileName);
         if (file.exists() && !file.isDirectory()) {
-            System.out.println("NOTE! " + fileName + " is already downloaded");
+            System.out.println("NOTE! " + fileName + " is already DOWNLOADED");
             return true;
         }
+        LOG.write(LOG.getCurrentMethodName(), "?");
         return false;
+    }
+
+    protected boolean isFileDownloaded(String fileName, String fileList) {
+        try {
+            BufferedReader reader = new BufferedReader(
+                    new FileReader(fileList)
+            );
+            String inLine;
+            while ((inLine = reader.readLine()) != null) {
+                if (inLine.equals(fileName)) {
+                    return true;
+                }
+            }
+            reader.close();
+        } catch (IOException e) {
+            LOG.write(LOG.getCurrentMethodName(), e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    protected void addToDownloaded(String fileName) {
+        try {
+            Files.write(Paths.get(DOWNLOADED),
+                    Collections.singletonList(fileName),
+                    StandardCharsets.UTF_8,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            LOG.write(LOG.getCurrentMethodName(), e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 }

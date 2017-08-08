@@ -1,6 +1,24 @@
-Log time              Caller class/method                       msg
---------------------  ----------------------------------------  ------------------------------------------------------------
-08-08-2017 18:40:15   Helper.FileHelper -> urlList              src\main\resources\wet_dow nload_list.txt (The system cannot find the file specified) 
-08-08-2017 18:40:19   Helper.FileHelper -> urlList              src\main\resources\wet_dow nload_list.txt (The system cannot find the file specified) 
-08-08-2017 18:40:45   Helper.FileHelper -> urlList              src\main\resources\wet_download_list.txt (The system cannot find the file specified) 
-08-08-2017 18:41:00   Helper.FileHelper -> urlList              src\main\resources\wet_download_list.txt (The system cannot find the file specified) 
+Log time              Caller class/method                                           msg
+--------------------  ------------------------------------------------------------  ------------------------------------------------------------
+08-08-2017 19:28:38   Download.Downloader -> addToAlreadyProcessed                  src\main\resources\wet\files
+08-08-2017 19:57:55   Download.Downloader -> isFileDownloaded                       src\main\resources\wet\files (Access is denied)
+08-08-2017 20:42:54   Download.Downloader -> isFileExsit                            ?
+08-08-2017 20:42:54   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 20:43:16   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 21:16:01   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 21:25:20   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 21:25:32   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 21:28:45   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 21:28:56   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 21:30:42   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 21:31:22   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 21:32:11   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 21:32:44   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 21:35:50   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 21:36:33   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 21:39:03   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 21:40:46   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 21:41:42   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 21:42:34   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 21:44:29   Download.Downloader -> isFileExsit                            ? 
+08-08-2017 21:50:41   Download.Downloader -> isFileDownloaded                       CC-MAIN-20170720121902-20170720141902-00000.warc.wet.gz (The system cannot find the file specified) 

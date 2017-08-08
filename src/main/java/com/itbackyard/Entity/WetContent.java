@@ -1,51 +1,45 @@
 package com.itbackyard.Entity;
 
 /**
- * By Maytham on 04-09-2016.
+ * Wet-extractor
+ * Developer Maytham on 04-09-2016
+ * Updated Maytham 08-08-2017
+ * 2017 © Copyright | ITBackyard ApS
  */
 public class WetContent {
 
-    private String sUrl;
-    private String sTitle;
-    private String sContent;
+    private String url;
+    private String title;
+    private String content;
 
     public WetContent(String url, String title, String content) {
-        this.sUrl = url;
-        this.sTitle = title;
-        this.sContent = content;
+        this.url = url;
+        this.title = title;
+        this.content = content;
     }
 
     public String getUrl() {
-        return sUrl;
+        return url;
     }
 
     public void setUrl(String url) {
-        this.sUrl = url;
+        this.url = url;
     }
 
     public String getTitle() {
-        return sTitle;
+        return title;
     }
 
     public void setTitle(String title) {
-        this.sTitle = title;
+        this.title = title;
     }
 
     public String getContent() {
-        return sContent;
+        return content;
     }
 
     public void setContent(String content) {
-        this.sContent = content;
+        this.content = content;
     }
 
-
-    /*@Override
-    public String toString() {
-        return oneLine("Item: ", "is here: ");
-    }*/
-
-    /*public String oneLine(String pre, String post) {
-        return pre + mWhat + " " + post + mWhere;
-    }*/
 }

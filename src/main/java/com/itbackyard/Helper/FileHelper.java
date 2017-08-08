@@ -1,6 +1,5 @@
 package com.itbackyard.Helper;
 
-import com.itbackyard.Entity.LogData;
 import com.itbackyard.Entity.WetContent;
 import org.apache.commons.lang.StringUtils;
 
@@ -11,7 +10,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -20,7 +18,7 @@ import java.util.stream.Stream;
  */
 public class FileHelper {
 
-    public static LogData log = LogData.getInstance();
+    private static LogData log = LogData.getInstance();
 
     public static List<Path> listSourceFiles(Path dir) throws IOException {
         List<Path> result = new ArrayList<>();
@@ -144,38 +142,6 @@ public class FileHelper {
             // the directory already exists.
         } catch (IOException e) {
             //something else went wrong
-            e.printStackTrace();
-        }
-    }
-
-
-    public static boolean isFileAlreadyProcessed(String fileName, Path PROCESSED_FILES) {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(PROCESSED_FILES.toString()));
-            String inLine;
-            while ((inLine = reader.readLine()) != null) {
-                if (inLine.equals(fileName)) {
-                    return true;
-                }
-            }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public static void addToAlreadyProcessed(String processedFileName, Path PROCESSED_FILES) {
-        isFolderExist(PROCESSED_FILES);
-
-        List<String> list = Collections.singletonList(processedFileName);
-
-        try {
-            Files.write(PROCESSED_FILES, list,
-                    StandardCharsets.UTF_8,
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.APPEND);
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }

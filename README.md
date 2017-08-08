@@ -1,15 +1,14 @@
-Welcome to Crawler v1.0
+Welcome to Crawler v2.0 dev
 ========================
 
-Documents
+New version under development.
+
+How to use
 -------------
 - Import the project as Maven.
-- Download wet files and move those under resources/wet folder.
+- Download wet files and move those under resources/wet/files folder.
 - run Program (main method in it)
-- It will take 5-10 second to process and output each wet file
-
-**Download search generated files**
-https://www.dropbox.com/sh/ivf8wb10plgxwlz/AAATpBoq-FPlDA4fxZEmo5Pga?dl=0
+- It will take 5-10 second to process each file and makes dummy output
 
 - - -
 
