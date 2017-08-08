@@ -1,0 +1,6 @@
+Log time              Caller class/method                       msg
+--------------------  ----------------------------------------  ------------------------------------------------------------
+08-08-2017 18:40:15   Helper.FileHelper -> urlList              src\main\resources\wet_dow nload_list.txt (The system cannot find the file specified) 
+08-08-2017 18:40:19   Helper.FileHelper -> urlList              src\main\resources\wet_dow nload_list.txt (The system cannot find the file specified) 
+08-08-2017 18:40:45   Helper.FileHelper -> urlList              src\main\resources\wet_download_list.txt (The system cannot find the file specified) 
+08-08-2017 18:41:00   Helper.FileHelper -> urlList              src\main\resources\wet_download_list.txt (The system cannot find the file specified) 
