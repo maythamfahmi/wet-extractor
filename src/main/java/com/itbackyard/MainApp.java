@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 /**
- * QualiFramework
+ * Wet-extractor
  * Developer Maytham on 25-07-2017
  * 2017 © Copyright | ITBackyard ApS
  */
