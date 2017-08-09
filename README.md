@@ -1,14 +1,29 @@
-Welcome to Crawler v2.0 dev
+Welcome to Crawler v2.1 dev
 ========================
+Little software to download and extract WET file content Amazon S3 [commoncrawl][1].
 
-New version under development.
+The idea is to generate Dummy Searchable files for search engine.
+
+This is software is still under development.
 
 How to use
 -------------
 - Import the project as Maven.
-- Download wet files and move those under resources/wet/files folder.
-- run Program (main method in it)
-- It will take 5-10 second to process each file and makes dummy output
+
+Download WET files
+-------------
+- If you need to download WET files
+   - Chose how many wet files to download
+   - Set downloed <code>true</code>
+- Run and Wait.
+
+If you already have downloaded files
+- Set download to <code>false</code>
+- Run and Wait. 
+
+Note: 
+ - Download process might take time depending on your internet conneciton. 
+ - Each file will take 5-10 second to process and makes dummy output.
 
 - - -
 
@@ -22,7 +37,7 @@ Open the class it is self explainable.
 
 ----------
 
-**Current version update (top is most recent):**
+**Old version notes:**
 **Ver. 1.0**
 
 1. Beta release 1.0, every thing works perfect.
@@ -63,3 +78,6 @@ Open the class it is self explainable.
 **Ver. > 0.40:**
 Wet file extractor base project
 v0.10 - v0.30 made offline til 0.40 was deployed on git
+
+
+[1]: http://commoncrawl.org

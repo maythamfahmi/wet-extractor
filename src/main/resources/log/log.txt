@@ -8,3 +8,4 @@ Log time              Caller class/method                                       
 08-08-2017 22:21:20   Download.Downloader -> isFileExsit                            ?
 08-08-2017 22:44:12   Helper.FileHelper -> createSearchFile                         resources\output\master_170808224400.txt 
 08-08-2017 22:44:23   Helper.FileHelper -> createSearchFile                         resources\output\master_170808224400.txt 
+09-08-2017 15:32:10   Download.Downloader -> isFileExsit                            ? 

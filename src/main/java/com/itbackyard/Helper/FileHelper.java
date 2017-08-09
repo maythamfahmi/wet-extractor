@@ -63,6 +63,12 @@ public class FileHelper {
         }
     }
 
+    /**
+     * Return list of string from file lines
+     *
+     * @param fileName
+     * @return
+     */
     public static List<String> linesReader(String fileName) {
         List<String> list = new ArrayList<>();
 

@@ -28,16 +28,10 @@ public class Downloader {
     private final String BASE_URL = "https://commoncrawl.s3.amazonaws.com/";
     private final String DOWNLOAD_FILE = Const.res + "/wet/files/";
     private final String DOWNLOADED = Const.res + "/wet/downloaded.txt";
-    private final String URL_DOWNLOAD_LIST = Const.res + "/wet/url_download_list.txt";
+    public final String URL_DOWNLOAD_LIST = Const.res + "/wet/url_download_list.txt";
     private final LogData LOG = LogData.getInstance();
     private final int CORES = Runtime.getRuntime().availableProcessors();
     private final int POOLS = CORES;
-
-    public static void main(String[] args) {
-        System.out.println("Staring downloading...");
-        Downloader d = new Downloader();
-        d.doStart(d.URL_DOWNLOAD_LIST, 2);
-    }
 
     /**
      * Download wet common crawl files from Amazon S3
@@ -67,6 +61,9 @@ public class Downloader {
         });
 
         pool.shutdown();
+
+        /*if (pool.isShutdown())
+            System.out.println("Done Done");*/
 
         /*try {
             pool.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);

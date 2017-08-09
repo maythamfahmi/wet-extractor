@@ -2,39 +2,64 @@ package com.itbackyard.Helper;
 
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * By Maytham on 07-09-2016.
  */
 public class ContentFilter {
 
-    private static CharsetEncoder asciiEncoder =
-            Charset.forName("US-ASCII").newEncoder();
+    private List<String> swearWords;
+    private String whiteDomain;
 
-    //remove none English content
-    public static boolean isPureAscii(String v) {
-        return asciiEncoder.canEncode(v);
+    public ContentFilter() {
     }
 
-    //remove content with SwearWords
-    public static boolean isNotSwearWord(String content, List<String> swearWordsList) {
+    public ContentFilter(List<String> swearWords, String whiteDomain) {
+        this.swearWords = swearWords;
+        this.whiteDomain = whiteDomain;
+    }
 
-        String[] words = content.replaceAll("\"^[a-zA-Z0-9]*$\"", "").trim().split(" ");
+    private CharsetEncoder asciiEncoder =
+            Charset.forName("US-ASCII").newEncoder();
 
-        for (String word : words) {
-            for (int j = 0; j < swearWordsList.size(); j++) {
-                if (word.toLowerCase()
-                        .contains(swearWordsList.get(j).toLowerCase())) {
-                    return false;
-                }
+    /**
+     * Prevent none English content
+     *
+     * @param content
+     * @return
+     */
+    public boolean isPureAscii(String content) {
+        return asciiEncoder.canEncode(content);
+    }
+
+    /**
+     * Prevent swear word content
+     *
+     * @param wordIn
+     * @return
+     */
+    public boolean isNotSwearWord(String wordIn) {
+        String word = wordIn.toLowerCase();
+        for (String swearWord : swearWords) {
+            if(word.contains(swearWord)){
+                return false;
             }
         }
         return true;
     }
 
-    //Create blacklist domains data structure
-    public static boolean isWhiteDomain(String url, String whiteDomain) {
+    /**
+     * White list domains
+     *
+     * @param url
+     * @return
+     */
+    public boolean isWhiteDomain(String url) {
         return whiteDomain.equals("") || url.contains(whiteDomain);
     }
 }
