@@ -75,4 +75,5 @@ buildNumber.properties
 
 # End of https://www.gitignore.io/api/maven,intellij+iml
 
-src/main/wet/files
+src/main/resources/wet/files
+src/main/resources/output
