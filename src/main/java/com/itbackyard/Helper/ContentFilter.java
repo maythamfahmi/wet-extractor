@@ -2,10 +2,7 @@ package com.itbackyard.Helper;
 
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -14,6 +11,7 @@ import java.util.stream.Collectors;
 public class ContentFilter {
 
     private List<String> swearWords;
+    private TreeSet<String> swearWordsTree;
     private String whiteDomain;
 
     public ContentFilter() {
@@ -21,6 +19,11 @@ public class ContentFilter {
 
     public ContentFilter(List<String> swearWords, String whiteDomain) {
         this.swearWords = swearWords;
+        this.whiteDomain = whiteDomain;
+    }
+
+    public ContentFilter(TreeSet<String> swearWordsTree, String whiteDomain) {
+        this.swearWordsTree = swearWordsTree;
         this.whiteDomain = whiteDomain;
     }
 
@@ -45,8 +48,8 @@ public class ContentFilter {
      */
     public boolean isNotSwearWord(String wordIn) {
         String word = wordIn.toLowerCase();
-        for (String swearWord : swearWords) {
-            if(word.contains(swearWord)){
+        for (String swearWord : swearWordsTree) {
+            if (word.contains(swearWord)) {
                 return false;
             }
         }

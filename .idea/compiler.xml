@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Wet-extractor" />
+        <module name="Wet-extractor2" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Wet-extractor" target="1.8" />
+      <module name="Wet-extractor2" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

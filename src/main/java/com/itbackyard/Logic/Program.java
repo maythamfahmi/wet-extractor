@@ -20,6 +20,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Wet-extractor
@@ -28,17 +29,26 @@ import java.util.*;
  */
 public class Program {
 
+    /**
+     * system config
+     **/
     private final LogData LOG = LogData.getInstance();
     private final Calendar cal = Calendar.getInstance();
     private final SimpleDateFormat sdf = new SimpleDateFormat("YYMMddHHmmss");
     private final Path DOWNLOAD_FILE = Paths.get(Const.res + "/wet/files/");
     private final String SWEAR_WORDS = Const.res + "/lists/words/swearwords.txt";
-    private List<String> swearWordsMap;
     private final Path SAVE_SEARCH_FILEAS = Paths.get(Const.res +
             "/output/master_" + sdf.format(cal.getTime()) + ".txt");
-    private final int MIN_WORD_LENGTH = 1;
-    private final int MAX_WORD_LENGTH = 30;
-    private final int TITLE_WIDTH = 70;
+    private List<String> swearWords;
+    private TreeSet<String> swearWordsTree;
+    private Map<String, String> swearWordsMap;
+
+    /**
+     * user config
+     **/
+    private int MIN_WORD_LENGTH = 1;
+    private int MAX_WORD_LENGTH = 30;
+    private int TITLE_WIDTH = 70;
     private int counter = 0;
 
     /**
@@ -48,13 +58,15 @@ public class Program {
      * bbc.co.uk<br>
      * cnn.com<br>
      */
-    private final String whiteDomain = "";
+    private String whiteDomain = "";
 
     /**
      * @throws IOException
      */
     public void onStart() throws IOException {
-        swearWordsMap = swearWord(SWEAR_WORDS);
+        //swearWords = swearWord(SWEAR_WORDS);
+        //swearWordsMap = swearWordMap(SWEAR_WORDS);
+        swearWordsTree = swearWordTree(SWEAR_WORDS);
 
         FileHelper.listSourceFiles(DOWNLOAD_FILE, "*.{warc.wet.gz}")
                 .forEach(fileName -> {
@@ -86,22 +98,26 @@ public class Program {
      */
     private void wetExtractor(String readDataFile) throws IOException {
         FileInputStream fis = new FileInputStream(readDataFile);
-        ContentFilter cf = new ContentFilter(swearWordsMap, whiteDomain);
+        ContentFilter cf = new ContentFilter(swearWordsTree, whiteDomain);
         List<String> output = new ArrayList<>();
 
         ArchiveReader archiveReader = WARCReaderFactory.get(
                 readDataFile, fis, true);
 
-        for (ArchiveRecord archiveRecord : archiveReader) {
+        archiveReader.spliterator().forEachRemaining((ArchiveRecord elm) -> {
 
-            ArchiveRecordHeader header = archiveRecord.getHeader();
+            ArchiveRecordHeader header = elm.getHeader();
             String idf = header.toString();
             String url = header.getUrl();
 
             if (!idf.startsWith("{reader-identifier")) {
-                byte[] rawData = IOUtils.toByteArray(
-                        archiveRecord, archiveRecord.available());
-                String rawContent = new String(rawData);
+                String rawContent = null;
+                try {
+                    byte[] rawData = IOUtils.toByteArray(elm, elm.available());
+                    rawContent = new String(rawData);
+                } catch (Exception e) {
+                    e.getStackTrace();
+                }
                 String title = rawContent.substring(0, rawContent.indexOf("\n") + 1);
                 String content = rawContent.substring(rawContent.indexOf("\n") + 1);
 
@@ -124,7 +140,7 @@ public class Program {
                     }
                 }
             }
-        }
+        });
         createSearchFile(SAVE_SEARCH_FILEAS, output);
     }
 
@@ -135,8 +151,6 @@ public class Program {
     private TreeSet<String> swearWordTree(String fileName) {
         List<String> lst = FileHelper.linesReader(fileName);
         TreeSet<String> tree = new TreeSet<>(lst);
-        /*tree = lst.stream()
-                .collect(Collectors.toSet(String::new, item -> item));*/
         return tree;
     }
 
@@ -144,16 +158,23 @@ public class Program {
      * @param fileName
      * @return
      */
+    private Map<String, String> swearWordMap(String fileName) {
+        return FileHelper.linesReader(fileName).stream()
+                .collect(Collectors.toMap(String::new, item -> item));
+    }
+
+    /**
+     * @param fileName
+     * @return
+     */
     private List<String> swearWord(String fileName) {
-        List<String> lst = FileHelper.linesReader(fileName);
-        return lst;
+        return FileHelper.linesReader(fileName);
     }
 
     /**
      * @param fileName
      * @param filteredContent
      */
-
     private void createSearchFile(Path fileName, List<String> filteredContent) {
         FileHelper.isFolderExist(fileName);
         try {
