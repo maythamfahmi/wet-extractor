@@ -22,7 +22,7 @@ public class DownloaderTest {
 
     @Test
     public void isFileExsit() throws Exception {
-        assertEquals(true, d.isFileExsit(Const.resTest + fileName));
+        assertEquals(true, d.isFileExist(Const.resTest + fileName));
     }
 
     @Test

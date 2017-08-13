@@ -1,8 +1,7 @@
 package com.itbackyard.Download;
 
 import com.itbackyard.Const;
-import com.itbackyard.Helper.FileHelper;
-import com.itbackyard.Helper.LogData;
+import com.itbackyard.System.ISystem;
 
 import java.io.*;
 import java.net.URL;
@@ -23,13 +22,12 @@ import java.util.stream.Stream;
  * Updated Maytham 08-08-2017
  * 2017 © Copyright | ITBackyard ApS
  */
-public class Downloader {
+public class Downloader implements ISystem {
 
     private final String BASE_URL = "https://commoncrawl.s3.amazonaws.com/";
-    private final String DOWNLOAD_FILE = Const.res + "/wet/files/";
+    private final String DOWNLOAD_PATH = Const.res + "/wet/files/";
     private final String DOWNLOADED = Const.res + "/wet/downloaded.txt";
     public final String URL_DOWNLOAD_LIST = Const.res + "/wet/url_download_list.txt";
-    private final LogData LOG = LogData.getInstance();
     private final int CORES = Runtime.getRuntime().availableProcessors();
     private final int POOLS = CORES;
 
@@ -43,18 +41,22 @@ public class Downloader {
 
         ExecutorService pool = Executors.newFixedThreadPool(POOLS);
 
-        Stream<String> streamOfUrl = FileHelper.urlList(downloadList, maxUrls);
+        Stream<String> streamOfUrl = file.urlList(downloadList, maxUrls);
 
         streamOfUrl.forEach(fullUrl -> {
             String url = BASE_URL + fullUrl;
-            String filename = getFilenameFromUrl(url);
-            if (!isFileExsit(DOWNLOAD_FILE + filename) ||
-                    !isFileDownloaded(filename, DOWNLOADED)) {
+            String fileName = getFilenameFromUrl(url);
+            if (!file.exist(DOWNLOAD_PATH)) {
+                file.createFolder(DOWNLOAD_PATH);
+            }
+            // in case to check file existence
+            /*|| !isFileExist(DOWNLOAD_PATH + fileName)*/
+            if (!isFileDownloaded(fileName, DOWNLOADED)) {
                 pool.submit(new DownloadTask(url));
                 try {
                     pool.awaitTermination(1000, TimeUnit.MILLISECONDS);
                 } catch (InterruptedException e) {
-                    LOG.write(LOG.getCurrentMethodName(), e.getMessage());
+                    log.write(log.getCurrentMethodName(), e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -62,16 +64,13 @@ public class Downloader {
 
         pool.shutdown();
 
-        /*if (pool.isShutdown())
-            System.out.println("Done Done");*/
-
-        /*try {
+        // this to let the system wait until download is finished
+        try {
             pool.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
-            //pool.awaitTermination(1, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
-            LOG.write(LOG.getCurrentMethodName(), e.getMessage());
+            log.write(log.getCurrentMethodName(), e.getMessage());
             e.printStackTrace();
-        }*/
+        }
     }
 
     class DownloadTask implements Runnable {
@@ -96,14 +95,14 @@ public class Downloader {
             InputStream inputStream = url.openStream();
             Files.copy(
                     inputStream,
-                    Paths.get(DOWNLOAD_FILE + filename),
+                    Paths.get(DOWNLOAD_PATH + filename),
                     StandardCopyOption.REPLACE_EXISTING
             );
             inputStream.close();
             System.out.println("Saving: " + filename);
             addToDownloaded(filename);
         } catch (IOException e) {
-            LOG.write(LOG.getCurrentMethodName(), e.getMessage());
+            log.write(log.getCurrentMethodName(), e.getMessage());
             e.printStackTrace();
         }
     }
@@ -113,13 +112,12 @@ public class Downloader {
         return url.substring(pos, url.length());
     }
 
-    protected boolean isFileExsit(String fileName) {
+    protected boolean isFileExist(String fileName) {
         File file = new File(fileName);
         if (file.exists() && !file.isDirectory()) {
-            System.out.println("NOTE! " + fileName + " is already DOWNLOADED");
             return true;
         }
-        LOG.write(LOG.getCurrentMethodName(), "?");
+        log.write(log.getCurrentMethodName(), "?");
         return false;
     }
 
@@ -136,8 +134,9 @@ public class Downloader {
             }
             reader.close();
         } catch (IOException e) {
-            LOG.write(LOG.getCurrentMethodName(), e.getMessage());
-            e.printStackTrace();
+            log.write(log.getCurrentMethodName(), e.getMessage());
+            return false;
+            //e.printStackTrace();
         }
         return false;
     }
@@ -150,7 +149,7 @@ public class Downloader {
                     StandardOpenOption.CREATE,
                     StandardOpenOption.APPEND);
         } catch (IOException e) {
-            LOG.write(LOG.getCurrentMethodName(), e.getMessage());
+            log.write(log.getCurrentMethodName(), e.getMessage());
             e.printStackTrace();
         }
     }

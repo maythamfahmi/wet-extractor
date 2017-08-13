@@ -1,7 +1,9 @@
 package com.itbackyard.Helper;
 
 import com.itbackyard.Const;
+import com.itbackyard.System.ISystem;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -19,9 +21,9 @@ import java.util.List;
  * Updated Maytham 08-08-2017
  * 2017 © Copyright | ITBackyard ApS
  */
-public class LogData {
+public class LogData implements ISystem {
 
-    private final Path logFile = Paths.get(Const.res + "/log/log.txt");
+    private final String logFile = Const.res + "/log/log.txt";
     private final String textFormat = "%-22s%-62s%s";
     private final String DATE_FORMAT = "dd-MM-Y HH:mm:ss";
     private final int removePackageName = "com.itbackyard.".length();
@@ -35,6 +37,7 @@ public class LogData {
 
     /**
      * LogData Singleton
+     *
      * @return
      */
     public static LogData getInstance() {
@@ -47,7 +50,7 @@ public class LogData {
      * @param action
      */
     public void write(String action) {
-        write(action, null);
+        write(action, "");
     }
 
     /**
@@ -57,18 +60,14 @@ public class LogData {
      * @param msg
      */
     public void write(String action, String msg) {
-        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
-        String time = format.format(Calendar.getInstance().getTime());
-        String result = logFormat(action, msg, time);
-        List<String> lines = Collections.singletonList(result);
-        try {
-            Files.write(logFile, lines,
-                    StandardCharsets.UTF_8,
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.APPEND);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (!file.exist(logFile)) {
+            logHeader();
         }
+        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
+        String time = format.format(cal.getTime());
+        String result = logFormat(action, msg, time);
+        List<String> content = Collections.singletonList(result);
+        file.createFile(logFile, content);
     }
 
     /**
@@ -88,7 +87,7 @@ public class LogData {
         return String.format(textFormat, time + " ", action + " ", msg + " ");
     }
 
-    private String logHeader() {
+    private void logHeader() {
         StringBuilder s = new StringBuilder();
         String header = String.format(textFormat,
                 "Log time",
@@ -100,7 +99,7 @@ public class LogData {
                 "------------------------------------------------------------");
         s.append(header);
         s.append(lines);
-        return s.toString();
+        file.createFile(logFile, Collections.singletonList(s.toString()));
     }
 
 }

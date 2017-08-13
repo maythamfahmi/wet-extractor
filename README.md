@@ -1,4 +1,4 @@
-Welcome to Crawler v2.1 dev
+Welcome to Crawler v2.2 dev
 ========================
 Little software to download and extract WET file content Amazon S3 [commoncrawl][1].
 
@@ -9,23 +9,20 @@ This is software is still under development.
 How to use
 -------------
 - Import the project as Maven.
-
-Download WET files
--------------
-- If you need to download WET files
-   - Chose how many wet files to download
-   - Set downloed <code>true</code>
 - Run and Wait.
-
-If you already have downloaded files
-- Set download to <code>false</code>
-- Run and Wait. 
+- It will download WET files
+- When download is done, it start processing files
 
 Note: 
  - Download process might take time depending on your internet conneciton. 
  - Each file will take 5-10 second to process and makes dummy output.
 
 - - -
+
+v.2.2 Interface ISystem, FileHelper, LogData Major improvement + MainApp with (Thread for auto run)
+v.2.1 improvement
+v.2.0 code is re-written based on old concept
+
 
 > **Note:** It will take some time to process over 200 WET files.
 > Than it will generate big file under output folder.

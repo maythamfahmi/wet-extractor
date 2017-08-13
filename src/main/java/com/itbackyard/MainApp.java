@@ -1,10 +1,14 @@
 package com.itbackyard;
 
 import com.itbackyard.Download.Downloader;
+import com.itbackyard.Helper.LogData;
 import com.itbackyard.Logic.Program;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Wet-extractor
@@ -13,19 +17,64 @@ import java.net.URISyntaxException;
  */
 public class MainApp {
 
-    public static void main(String[] args) throws IOException, URISyntaxException {
+    private static final LogData LOG = LogData.getInstance();
 
-        boolean download = false;
+    public static void main(String[] args) throws InterruptedException {
 
-        if (download) {
+        ExecutorService service = Executors.newFixedThreadPool(3);
+
+        service.submit(() -> {
             System.out.println("Staring downloading...");
             Downloader d = new Downloader();
             d.doStart(d.URL_DOWNLOAD_LIST, 2);
-        } else {
-            System.out.println("Starting...");
-            new Program().onStart();
-        }
+        });
 
+        service.submit(() -> {
+            System.out.println("Staring processing...");
+            try {
+                new Program().onStart();
+            } catch (IOException e) {
+                LOG.write(LOG.getCurrentMethodName(), e.getMessage());
+                e.printStackTrace();
+            }
+        });
+
+        service.shutdown();
+
+        service.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+
+    }
+
+
+    public static void main1(String[] args) throws IOException, URISyntaxException {
+
+        Thread downloading = new Thread(() -> {
+            System.out.println("Staring downloading...");
+            Downloader d = new Downloader();
+            d.doStart(d.URL_DOWNLOAD_LIST, 2);
+        });
+        Thread processing = new Thread(() -> {
+            System.out.println("Staring processing...");
+            try {
+                new Program().onStart();
+            } catch (IOException e) {
+                LOG.write(LOG.getCurrentMethodName(), e.getMessage());
+                e.printStackTrace();
+            }
+        });
+        Thread finalizing = new Thread() {
+
+        };
+
+        try {
+            downloading.start();
+            downloading.join();
+            processing.start();
+            //processing.join();
+        } catch (InterruptedException e) {
+            LOG.write(LOG.getCurrentMethodName(), e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 }

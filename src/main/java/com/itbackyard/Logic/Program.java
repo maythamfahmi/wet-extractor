@@ -2,8 +2,7 @@ package com.itbackyard.Logic;
 
 import com.itbackyard.Const;
 import com.itbackyard.Helper.ContentFilter;
-import com.itbackyard.Helper.FileHelper;
-import com.itbackyard.Helper.LogData;
+import com.itbackyard.System.ISystem;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.archive.io.ArchiveReader;
@@ -13,11 +12,8 @@ import org.archive.io.warc.WARCReaderFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,21 +23,17 @@ import java.util.stream.Collectors;
  * Developer Maytham on 07-09-2017
  * 2017 © Copyright | ITBackyard ApS
  */
-public class Program {
+public class Program implements ISystem {
 
     /**
      * system config
      **/
-    private final LogData LOG = LogData.getInstance();
-    private final Calendar cal = Calendar.getInstance();
     private final SimpleDateFormat sdf = new SimpleDateFormat("YYMMddHHmmss");
     private final Path DOWNLOAD_FILE = Paths.get(Const.res + "/wet/files/");
     private final String SWEAR_WORDS = Const.res + "/lists/words/swearwords.txt";
-    private final Path SAVE_SEARCH_FILEAS = Paths.get(Const.res +
-            "/output/master_" + sdf.format(cal.getTime()) + ".txt");
-    private List<String> swearWords;
+    private final String SAVE_SEARCH_FILE_AS = Const.res + "/output/master_" +
+            sdf.format(cal.getTime()) + ".txt";
     private TreeSet<String> swearWordsTree;
-    private Map<String, String> swearWordsMap;
 
     /**
      * user config
@@ -64,18 +56,16 @@ public class Program {
      * @throws IOException
      */
     public void onStart() throws IOException {
-        //swearWords = swearWord(SWEAR_WORDS);
-        //swearWordsMap = swearWordMap(SWEAR_WORDS);
-        swearWordsTree = swearWordTree(SWEAR_WORDS);
+        swearWordsTree = file.fileToTree(SWEAR_WORDS);
 
-        FileHelper.listSourceFiles(DOWNLOAD_FILE, "*.{warc.wet.gz}")
+        file.listFiles(DOWNLOAD_FILE, "*.{warc.wet.gz}")
                 .forEach(fileName -> {
                     try {
                         counter++;
                         System.out.println(counter + ": " + fileName);
                         wetExtractor(fileName.toString());
                     } catch (IOException e) {
-                        LOG.write(LOG.getCurrentMethodName(), e.getMessage());
+                        log.write(log.getCurrentMethodName(), e.getMessage());
                         e.printStackTrace();
                     }
                 });
@@ -141,51 +131,19 @@ public class Program {
                 }
             }
         });
-        createSearchFile(SAVE_SEARCH_FILEAS, output);
-    }
-
-    /**
-     * @param fileName
-     * @return
-     */
-    private TreeSet<String> swearWordTree(String fileName) {
-        List<String> lst = FileHelper.linesReader(fileName);
-        TreeSet<String> tree = new TreeSet<>(lst);
-        return tree;
-    }
-
-    /**
-     * @param fileName
-     * @return
-     */
-    private Map<String, String> swearWordMap(String fileName) {
-        return FileHelper.linesReader(fileName).stream()
-                .collect(Collectors.toMap(String::new, item -> item));
-    }
-
-    /**
-     * @param fileName
-     * @return
-     */
-    private List<String> swearWord(String fileName) {
-        return FileHelper.linesReader(fileName);
+        createSearchFile(SAVE_SEARCH_FILE_AS, output);
     }
 
     /**
      * @param fileName
      * @param filteredContent
      */
-    private void createSearchFile(Path fileName, List<String> filteredContent) {
-        FileHelper.isFolderExist(fileName);
-        try {
-            Files.write(fileName, filteredContent,
-                    StandardCharsets.UTF_8,
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.APPEND);
-        } catch (IOException e) {
-            LOG.write(LOG.getCurrentMethodName(), e.getMessage());
-            e.printStackTrace();
+    private void createSearchFile(String fileName, List<String> filteredContent) {
+        Path path = Paths.get(fileName).getParent();
+        if (!file.exist(path)) {
+            file.createFolder(path);
         }
+        file.createFile(fileName, filteredContent);
     }
 
 }
