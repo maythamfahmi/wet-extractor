@@ -10,7 +10,7 @@ It generates Dummy Searchable files from WET files for Search Engine Research an
 
 ## Javadocs
 
-* [3.0]()
+* [3.0](http://dev.itbackyard.dk/wet-extractor/3/)
 * 2.0 N/A
 * 1.0 N/A
 
@@ -21,7 +21,7 @@ If you find an issue, please file a report [here](https://github.com/maythamfahm
 
 # Wet Extractor updates
 
-## 15th August 2017  - wet extractor 0.3 released
+## 15th August 2017  - wet extractor 3.0 released
 
 I am glad to announce the 3.0 release of Wet extractor.
 
@@ -33,7 +33,7 @@ I am glad to announce the 2.0 release of Wet extractor.
 
 I am glad to announce the 1.0 release of Wet extractor.
 
-## How to use
+# How to use
 - Import the project as Maven (I use Intellij Community Edition).
 - By default set to 2 wet files, you can increase so it help creating bigger dummy file.
 - Remember! you need also to have enough storage resources.
