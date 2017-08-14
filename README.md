@@ -1,8 +1,10 @@
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
+<a href="url"><img src="http://dev.itbackyard.dk/wet-extractor/image/logo_wet_extractor.png" align="left" height="240" width="240" ></a>
+
 # Overview
 
-Wet extractor is a Java software that download and extract WET Common Crawl files content from Amazon S3 [commoncrawl][1].
+Wet extractor is a Java software that download and extract WET [Common Crawl][1] files content from Amazon S3.
 
 It generates Dummy Searchable files from WET files for Search Engine Research and Development purpose.
 
