@@ -14,8 +14,9 @@ public class Const implements ISystem {
     public static final String RES = "src/main/resources/";
     public static final String RES_TEST = "src/test/resources/";
 
-    public static final String CC_URL = "http://commoncrawl.org/the-data/get-started/";
-    public static final String BASE_URL = "https://commoncrawl.s3.amazonaws.com/";
+    public static final String URL_CC = "http://commoncrawl.org/the-data/get-started/";
+    public static final String URL_BASE = "https://commoncrawl.s3.amazonaws.com/";
+    public static final String URL_SWEAR_WORDS = "http://www.bannedwordlist.com/lists/swearWords.txt";
     public static final String FILENAME_GZ = "wet.paths.gz";
     public static final String EMPTY_STRING = "";
     public static final String PATH_WET = RES + "wet/";

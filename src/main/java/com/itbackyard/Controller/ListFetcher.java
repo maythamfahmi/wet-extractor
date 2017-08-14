@@ -1,4 +1,4 @@
-package com.itbackyard.Download;
+package com.itbackyard.Controller;
 
 import com.itbackyard.Const;
 import com.itbackyard.System.ISystem;
@@ -11,17 +11,17 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-public class CCListFetcher implements ISystem {
+public class ListFetcher implements ISystem {
 
     //Refrence pages:
     //https://commoncrawl.s3.amazonaws.com/crawl-data/CC-MAIN-2017-30/wet.paths.gz
     //http://commoncrawl.org/the-data/get-started/CC-MAIN-2017-30/wet.paths.gz
 
-    private CCListFetcher() {
+    private ListFetcher() {
     }
 
     private static class CCListFetcherHelper {
-        private static final CCListFetcher INSTANCE = new CCListFetcher();
+        private static final ListFetcher INSTANCE = new ListFetcher();
     }
 
     /**
@@ -29,8 +29,8 @@ public class CCListFetcher implements ISystem {
      *
      * @return
      */
-    public static CCListFetcher getInstance() {
-        return CCListFetcher.CCListFetcherHelper.INSTANCE;
+    public static ListFetcher getInstance() {
+        return ListFetcher.CCListFetcherHelper.INSTANCE;
     }
 
     /**
@@ -42,41 +42,58 @@ public class CCListFetcher implements ISystem {
 
             c.println("Prepare download list...");
 
-            Thread t1 = new Thread(() -> {
+            Thread[] t = new Thread[3];
+
+            t[0] = new Thread(() -> {
+                String fileName = Const.PATH_WET + Const.FILENAME_GZ;
                 try {
                     c.print("Downloading latest common crawl list...");
-                    ccf.download(ccf.lastWetUrl());
+                    listfetcher.download(listfetcher.lastWetUrl(), fileName);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             });
-            Thread t2 = new Thread(() -> {
+            t[1] = new Thread(() -> {
                 c.printDone();
                 c.print("Unzipping common crawl list: " + Const.FILE_GZ_DOWNLOAD_LIST);
                 gzip.gzUnzip(
                         Const.FILE_GZ_DOWNLOAD_LIST,
                         Const.FILE_URL_DOWNLOAD_LIST);
             });
-            Thread t3 = new Thread(() -> {
+            t[2] = new Thread(() -> {
                 c.printDone();
                 c.print("Saving text file: " + Const.FILE_GZ_DOWNLOAD_LIST);
                 file.deleteIfExists(Const.PATH_WET + Const.FILENAME_GZ);
             });
-            t1.start();
+
+            runThreads(t);
+        }
+
+        if (!file.exist(Const.SWEAR_WORDS)) {
+
+            c.println("Prepare download swear list...");
+
+            Thread[] t = new Thread[1];
+
+            t[0] = new Thread(() -> {
+                c.print("Downloading and saving Swearword list...");
+                try {
+                    download(Const.URL_SWEAR_WORDS, Const.SWEAR_WORDS);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                c.printDone();
+            });
+
+            runThreads(t);
+        }
+    }
+
+    private void runThreads(Thread[] t) {
+        for (Thread thread : t) {
+            thread.start();
             try {
-                t1.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            t2.start();
-            try {
-                t2.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            t3.start();
-            try {
-                t3.join();
+                thread.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -91,12 +108,12 @@ public class CCListFetcher implements ISystem {
      */
     private String lastWetUrl() throws IOException {
         try {
-            Document doc = Jsoup.connect(Const.CC_URL).get();
+            Document doc = Jsoup.connect(Const.URL_CC).get();
             Elements content = doc.getElementsByClass("entry-content");
             Elements archive = content.select("li:contains(MAIN)");
             String last = archive.select("li").last().toString();
             String fileName = last.substring(last.indexOf("CC-MAIN"), last.indexOf(" ")).trim();
-            return Const.BASE_URL + "crawl-data/" + fileName + "/" + Const.FILENAME_GZ;
+            return Const.URL_BASE + "crawl-data/" + fileName + "/" + Const.FILENAME_GZ;
         } catch (IOException e) {
             log.write(log.getCurrentMethodName(), e.getMessage());
             e.getStackTrace();
@@ -108,10 +125,10 @@ public class CCListFetcher implements ISystem {
      * @param url
      * @throws IOException
      */
-    private void download(String url) throws IOException {
+    private void download(String url, String fileName) throws IOException {
         try {
             URL website = new URL(url);
-            FileUtils.copyURLToFile(website, new File(Const.PATH_WET + Const.FILENAME_GZ));
+            FileUtils.copyURLToFile(website, new File(fileName));
         } catch (IOException e) {
             log.write(log.getCurrentMethodName(), e.getMessage());
             e.getStackTrace();

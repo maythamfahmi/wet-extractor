@@ -1,4 +1,4 @@
-package com.itbackyard.Logic;
+package com.itbackyard.Controller;
 
 import com.itbackyard.Const;
 import com.itbackyard.Helper.ContentFilter;
@@ -14,9 +14,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Wet-extractor
@@ -24,6 +22,22 @@ import java.util.stream.Collectors;
  * 2017 © Copyright | ITBackyard ApS
  */
 public class Program implements ISystem {
+
+    private Program() {
+    }
+
+    private static class ProgramHelper {
+        private static final Program INSTANCE = new Program();
+    }
+
+    /**
+     * Downloader Singleton
+     *
+     * @return
+     */
+    public static Program getInstance() {
+        return Program.ProgramHelper.INSTANCE;
+    }
 
     /**
      * system config
@@ -47,23 +61,29 @@ public class Program implements ISystem {
      */
     private String whiteDomain = "";
 
-    /**
-     * @throws IOException
-     */
-    public void onStart() throws IOException {
+    public void onStart() {
         swearWordsTree = file.fileToTree(Const.SWEAR_WORDS);
 
-        file.listFiles(Const.FILES_WET_PATH, "*.{warc.wet.gz}")
-                .forEach(fileName -> {
-                    try {
-                        counter++;
-                        System.out.println(counter + ": " + fileName);
-                        wetExtractor(fileName.toString());
-                    } catch (IOException e) {
-                        log.write(log.getCurrentMethodName(), e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
+        c.println("Staring processing...");
+
+        try {
+            file.listFiles(Const.FILES_WET_PATH, "*.{warc.wet.gz}")
+                    .forEach(fileName -> {
+                        try {
+                            counter++;
+                            c.println(counter + ": " + fileName);
+                            wetExtractor(fileName.toString());
+                        } catch (IOException e) {
+                            log.write(log.getCurrentMethodName(), e.getMessage());
+                            e.printStackTrace();
+                        }
+                    });
+        } catch (IOException e) {
+            log.write(log.getCurrentMethodName(), e.getMessage());
+            e.printStackTrace();
+        }
+
+        //c.printFinish();
 
     }
 

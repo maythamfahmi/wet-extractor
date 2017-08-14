@@ -1,6 +1,7 @@
-package com.itbackyard.Download;
+package com.itbackyard.Controller;
 
 import com.itbackyard.Const;
+import com.itbackyard.MainApp;
 import com.itbackyard.System.ISystem;
 
 import java.io.*;
@@ -24,27 +25,38 @@ import java.util.stream.Stream;
  */
 public class Downloader implements ISystem {
 
-    /*private final String BASE_URL = "https://commoncrawl.s3.amazonaws.com/";
-    private final String DOWNLOAD_PATH = Const.res + "/wet/files/";
-    private final String DOWNLOADED = Const.res + "/wet/downloaded.txt";
-    public final String URL_DOWNLOAD_LIST = Const.res + "/wet/url_download_list.txt";*/
     private final int CORES = Runtime.getRuntime().availableProcessors();
     private final int POOLS = CORES;
 
+    private Downloader() {
+    }
+
+    private static class DownloaderHelper {
+        private static final Downloader INSTANCE = new Downloader();
+    }
+
+    /**
+     * Downloader Singleton
+     *
+     * @return
+     */
+    public static Downloader getInstance() {
+        return Downloader.DownloaderHelper.INSTANCE;
+    }
+
     /**
      * Download wet common crawl files from Amazon S3
-     *
-     * @param downloadList
-     * @param maxUrls
      */
-    public void doStart(String downloadList, int maxUrls) {
+    public void doStart() {
 
         ExecutorService pool = Executors.newFixedThreadPool(POOLS);
+        int maxUrls = new MainApp().numberOfDownload;
+        Stream<String> streamOfUrl = file.urlList(Const.FILE_URL_DOWNLOAD_LIST, maxUrls);
 
-        Stream<String> streamOfUrl = file.urlList(downloadList, maxUrls);
+        c.println("Prepare download of wet files...");
 
         streamOfUrl.forEach(fullUrl -> {
-            String url = Const.BASE_URL + fullUrl;
+            String url = Const.URL_BASE + fullUrl;
             String fileName = getFilenameFromUrl(url);
             if (!file.exist(Const.FILES_WET_PATH)) {
                 file.createFolder(Const.FILES_WET_PATH);
@@ -67,6 +79,7 @@ public class Downloader implements ISystem {
         // this to let the system wait until download is finished
         try {
             pool.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
+            //c.printFinish();
         } catch (InterruptedException e) {
             log.write(log.getCurrentMethodName(), e.getMessage());
             e.printStackTrace();
@@ -91,7 +104,7 @@ public class Downloader implements ISystem {
         try {
             String filename = getFilenameFromUrl(urlRaw);
             URL url = new URL(urlRaw);
-            System.out.println("Downloading: " + urlRaw);
+            c.println("Downloading: " + urlRaw);
             InputStream inputStream = url.openStream();
             Files.copy(
                     inputStream,
@@ -99,7 +112,7 @@ public class Downloader implements ISystem {
                     StandardCopyOption.REPLACE_EXISTING
             );
             inputStream.close();
-            System.out.println("Saving: " + filename);
+            c.println("Saving: " + filename);
             addToDownloaded(filename);
         } catch (IOException e) {
             log.write(log.getCurrentMethodName(), e.getMessage());
@@ -107,12 +120,12 @@ public class Downloader implements ISystem {
         }
     }
 
-    protected String getFilenameFromUrl(String url) {
+    public String getFilenameFromUrl(String url) {
         int pos = url.lastIndexOf("wet/") + 4;
         return url.substring(pos, url.length());
     }
 
-    protected boolean isFileExist(String fileName) {
+    public boolean isFileExist(String fileName) {
         File file = new File(fileName);
         if (file.exists() && !file.isDirectory()) {
             return true;
@@ -121,7 +134,7 @@ public class Downloader implements ISystem {
         return false;
     }
 
-    protected boolean isFileDownloaded(String fileName, String fileList) {
+    public boolean isFileDownloaded(String fileName, String fileList) {
         try {
             BufferedReader reader = new BufferedReader(
                     new FileReader(fileList)
