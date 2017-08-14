@@ -1,4 +1,4 @@
-Welcome to Crawler v2.2 dev
+Welcome to Crawler v2.7 release
 ========================
 Little software to download and extract WET file content Amazon S3 [commoncrawl][1].
 
@@ -8,10 +8,12 @@ This is software is still under development.
 
 How to use
 -------------
-- Import the project as Maven.
-- Run and Wait.
-- It will download WET files
-- When download is done, it start processing files
+- Import the project as Maven (I use Intellij Community Edition).
+- By default set to 2 wet files, you can increase so it help creating bigger dummy file.
+- Remember! you need also to have enough storage resources.
+- Run and Wait. for each 1 files it takes 30-60 second.
+- It will download WET files if they are not already downloaded.
+- When download is done, it start processing files.
 
 Note: 
  - Download process might take time depending on your internet conneciton. 
@@ -75,6 +77,15 @@ Open the class it is self explainable.
 **Ver. > 0.40:**
 Wet file extractor base project
 v0.10 - v0.30 made offline til 0.40 was deployed on git
+
+**Old stuff**
+//Note
+//ExecutorService service = Executors.newFixedThreadPool(3);
+//service.submit(listfetcher::onStart);
+//service.submit(downloader::doStart);
+//service.submit(program::onStart);
+//service.shutdown();
+//service.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
 
 
 [1]: http://commoncrawl.org

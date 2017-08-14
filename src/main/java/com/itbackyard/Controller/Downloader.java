@@ -47,7 +47,7 @@ public class Downloader implements ISystem {
     /**
      * Download wet common crawl files from Amazon S3
      */
-    public void doStart() {
+    public void onStart() {
 
         ExecutorService pool = Executors.newFixedThreadPool(POOLS);
         int maxUrls = new MainApp().numberOfDownload;

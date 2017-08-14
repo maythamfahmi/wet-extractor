@@ -1,7 +1,9 @@
 package com.itbackyard;
 
 import com.itbackyard.System.ISystem;
+import sun.applet.Main;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -19,13 +21,15 @@ public class MainApp implements ISystem {
 
     public static void main(String[] args) throws InterruptedException {
 
-        ExecutorService service = Executors.newFixedThreadPool(3);
-        service.submit(listfetcher::onStart);
-        //service.submit(downloader::doStart);
-        //service.submit(program::onStart);
+        Thread[] t = new Thread[3];
+        t[0] = new Thread(listfetcher::onStart);
+        t[1] = new Thread(downloader::onStart);
+        t[2] = new Thread(program::onStart);
 
-        service.shutdown();
-        service.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+        thread.runThreads(t);
+
     }
+
+
 
 }

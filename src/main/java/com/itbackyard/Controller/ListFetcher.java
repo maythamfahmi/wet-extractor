@@ -64,13 +64,12 @@ public class ListFetcher implements ISystem {
                 c.printDone();
                 c.print("Saving text file: " + Const.FILE_GZ_DOWNLOAD_LIST);
                 file.deleteIfExists(Const.PATH_WET + Const.FILENAME_GZ);
+                c.printDone();
             });
-
-            runThreads(t);
+            thread.runThreads(t);
         }
 
         if (!file.exist(Const.SWEAR_WORDS)) {
-
             c.println("Prepare download swear list...");
 
             Thread[] t = new Thread[1];
@@ -84,20 +83,9 @@ public class ListFetcher implements ISystem {
                 }
                 c.printDone();
             });
-
-            runThreads(t);
+            thread.runThreads(t);
         }
-    }
 
-    private void runThreads(Thread[] t) {
-        for (Thread thread : t) {
-            thread.start();
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     /**

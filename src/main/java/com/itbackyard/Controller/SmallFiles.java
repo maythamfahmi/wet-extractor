@@ -1,4 +1,4 @@
-package com.itbackyard.FileGenerator;
+package com.itbackyard.Controller;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
