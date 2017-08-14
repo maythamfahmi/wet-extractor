@@ -10,8 +10,9 @@
     <packaging>jar</packaging>
 
     <description>
-        Java program for extracting Common Crawl WET files from S3
-        and safe it locally as dummy file for search engine
+        Java program for auto download, extracting Common Crawl WET files from S3
+        and creating searchable dummy text files for Search Engine
+        Research and Development purpose
     </description>
 
     <build>
