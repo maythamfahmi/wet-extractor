@@ -24,10 +24,10 @@ import java.util.stream.Stream;
  */
 public class Downloader implements ISystem {
 
-    private final String BASE_URL = "https://commoncrawl.s3.amazonaws.com/";
+    /*private final String BASE_URL = "https://commoncrawl.s3.amazonaws.com/";
     private final String DOWNLOAD_PATH = Const.res + "/wet/files/";
     private final String DOWNLOADED = Const.res + "/wet/downloaded.txt";
-    public final String URL_DOWNLOAD_LIST = Const.res + "/wet/url_download_list.txt";
+    public final String URL_DOWNLOAD_LIST = Const.res + "/wet/url_download_list.txt";*/
     private final int CORES = Runtime.getRuntime().availableProcessors();
     private final int POOLS = CORES;
 
@@ -44,14 +44,14 @@ public class Downloader implements ISystem {
         Stream<String> streamOfUrl = file.urlList(downloadList, maxUrls);
 
         streamOfUrl.forEach(fullUrl -> {
-            String url = BASE_URL + fullUrl;
+            String url = Const.BASE_URL + fullUrl;
             String fileName = getFilenameFromUrl(url);
-            if (!file.exist(DOWNLOAD_PATH)) {
-                file.createFolder(DOWNLOAD_PATH);
+            if (!file.exist(Const.FILES_WET_PATH)) {
+                file.createFolder(Const.FILES_WET_PATH);
             }
             // in case to check file existence
             /*|| !isFileExist(DOWNLOAD_PATH + fileName)*/
-            if (!isFileDownloaded(fileName, DOWNLOADED)) {
+            if (!isFileDownloaded(fileName, Const.FILE_DOWNLOADED)) {
                 pool.submit(new DownloadTask(url));
                 try {
                     pool.awaitTermination(1000, TimeUnit.MILLISECONDS);
@@ -95,7 +95,7 @@ public class Downloader implements ISystem {
             InputStream inputStream = url.openStream();
             Files.copy(
                     inputStream,
-                    Paths.get(DOWNLOAD_PATH + filename),
+                    Paths.get(Const.FILES_WET_PATH + filename),
                     StandardCopyOption.REPLACE_EXISTING
             );
             inputStream.close();
@@ -143,7 +143,7 @@ public class Downloader implements ISystem {
 
     protected void addToDownloaded(String fileName) {
         try {
-            Files.write(Paths.get(DOWNLOADED),
+            Files.write(Paths.get(Const.FILE_DOWNLOADED),
                     Collections.singletonList(fileName),
                     StandardCharsets.UTF_8,
                     StandardOpenOption.CREATE,

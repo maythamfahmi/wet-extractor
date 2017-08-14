@@ -3,15 +3,9 @@ package com.itbackyard.Helper;
 import com.itbackyard.Const;
 import com.itbackyard.System.ISystem;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,7 +17,6 @@ import java.util.List;
  */
 public class LogData implements ISystem {
 
-    private final String logFile = Const.res + "/log/log.txt";
     private final String textFormat = "%-22s%-62s%s";
     private final String DATE_FORMAT = "dd-MM-Y HH:mm:ss";
     private final int removePackageName = "com.itbackyard.".length();
@@ -60,14 +53,18 @@ public class LogData implements ISystem {
      * @param msg
      */
     public void write(String action, String msg) {
-        if (!file.exist(logFile)) {
+        Path pathOfFile = Paths.get(Const.FILE_LOG).getParent();
+        if (!file.exist(pathOfFile)) {
+            file.createFolder(pathOfFile);
+        }
+        if (!file.exist(Const.FILE_LOG)) {
             logHeader();
         }
         SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
         String time = format.format(cal.getTime());
         String result = logFormat(action, msg, time);
         List<String> content = Collections.singletonList(result);
-        file.createFile(logFile, content);
+        file.createFile(Const.FILE_LOG, content);
     }
 
     /**
@@ -99,7 +96,7 @@ public class LogData implements ISystem {
                 "------------------------------------------------------------");
         s.append(header);
         s.append(lines);
-        file.createFile(logFile, Collections.singletonList(s.toString()));
+        file.createFile(Const.FILE_LOG, Collections.singletonList(s.toString()));
     }
 
 }

@@ -22,12 +22,12 @@ public class DownloaderTest {
 
     @Test
     public void isFileExsit() throws Exception {
-        assertEquals(true, d.isFileExist(Const.resTest + fileName));
+        assertEquals(true, d.isFileExist(Const.RES_TEST + fileName));
     }
 
     @Test
     public void isFileDownloaded() throws Exception {
-        assertEquals(true, d.isFileDownloaded(fileName, Const.resTest + "downloaded.txt"));
+        assertEquals(true, d.isFileDownloaded(fileName, Const.RES_TEST + "downloaded.txt"));
     }
 
 

@@ -46,15 +46,15 @@ public class FileHelper implements ISystem {
      * Txt: "*.{txt}"<br>
      * Wet: "*.{warc.wet.gz}"
      *
-     * @param dir
+     * @param path
      * @param fileType
      * @return
      * @throws IOException
      */
-    public List<Path> listFiles(Path dir, String fileType) throws IOException {
+    public List<Path> listFiles(String path, String fileType) throws IOException {
 
         List<Path> result = new ArrayList<>();
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, fileType)) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(filePath(path), fileType)) {
             for (Path entry : stream) {
                 result.add(entry);
             }
@@ -140,6 +140,27 @@ public class FileHelper implements ISystem {
     public boolean createFolder(String path) {
         return createFolder(filePath(path));
     }
+
+    public boolean deleteIfExists(String path) {
+        return deleteIfExists(filePath(path));
+    }
+
+    public boolean deleteIfExists(Path path) {
+        try {
+            Files.deleteIfExists(path);
+            return true;
+        } catch (NoSuchFileException x) {
+            System.err.format("%s: no such" + " file or directory%n", path);
+        } catch (DirectoryNotEmptyException x) {
+            System.err.format("%s not empty%n", path);
+        } catch (IOException e) {
+            log.write(log.getCurrentMethodName(), e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+        return false;
+    }
+
 
     public boolean isDirectory(Path path) {
         return Files.isDirectory(path);

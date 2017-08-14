@@ -28,11 +28,6 @@ public class Program implements ISystem {
     /**
      * system config
      **/
-    private final SimpleDateFormat sdf = new SimpleDateFormat("YYMMddHHmmss");
-    private final Path DOWNLOAD_FILE = Paths.get(Const.res + "/wet/files/");
-    private final String SWEAR_WORDS = Const.res + "/lists/words/swearwords.txt";
-    private final String SAVE_SEARCH_FILE_AS = Const.res + "/output/master_" +
-            sdf.format(cal.getTime()) + ".txt";
     private TreeSet<String> swearWordsTree;
 
     /**
@@ -56,9 +51,9 @@ public class Program implements ISystem {
      * @throws IOException
      */
     public void onStart() throws IOException {
-        swearWordsTree = file.fileToTree(SWEAR_WORDS);
+        swearWordsTree = file.fileToTree(Const.SWEAR_WORDS);
 
-        file.listFiles(DOWNLOAD_FILE, "*.{warc.wet.gz}")
+        file.listFiles(Const.FILES_WET_PATH, "*.{warc.wet.gz}")
                 .forEach(fileName -> {
                     try {
                         counter++;
@@ -131,7 +126,7 @@ public class Program implements ISystem {
                 }
             }
         });
-        createSearchFile(SAVE_SEARCH_FILE_AS, output);
+        createSearchFile(Const.SAVE_SEARCH_FILE_AS, output);
     }
 
     /**
