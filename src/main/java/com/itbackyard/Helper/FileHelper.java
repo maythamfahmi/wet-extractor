@@ -6,6 +6,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.ArrayList;
@@ -234,6 +236,40 @@ public class FileHelper implements ISystem {
      */
     public List<String> fileToList(String fileName) {
         return file.linesReader(fileName);
+    }
+
+    /**
+     *
+     * @param url
+     * @return
+     */
+    public long fileSizeOnline(String url) {
+        long file_size = 0;
+        try {
+            URL urlObj = new URL(url);
+            URLConnection urlConnection = urlObj.openConnection();
+            urlConnection.connect();
+            file_size = urlConnection.getContentLength();
+        } catch (IOException e) {
+            log.write(log.getCurrentMethodName(), e.getMessage());
+            e.printStackTrace();
+        }
+        return file_size;
+    }
+
+    /**
+     *
+     * @param file
+     * @return
+     */
+    public long fileSizeLocal(String file) {
+        long file_size = 0;
+        try {
+            file_size = Files.size(Paths.get(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file_size;
     }
 
     public static void main(String[] args) {

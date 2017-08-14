@@ -61,7 +61,10 @@ public class Program implements ISystem {
      */
     private String whiteDomain = "";
 
-    public void onStart() {
+    // feature multiple processing in single files and gather results in main file.
+    // improve concurrency
+
+    public void start() {
         swearWordsTree = file.fileToTree(Const.SWEAR_WORDS);
 
         c.println("Staring processing...");

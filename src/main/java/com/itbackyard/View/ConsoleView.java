@@ -1,7 +1,5 @@
 package com.itbackyard.View;
 
-import com.itbackyard.Helper.FileHelper;
-
 public class ConsoleView {
 
     private ConsoleView() {

@@ -36,7 +36,7 @@ public class ListFetcher implements ISystem {
     /**
      * @throws InterruptedException
      */
-    public void onStart() {
+    public void start() {
 
         if (!file.exist(Const.FILE_URL_DOWNLOAD_LIST)) {
 
@@ -66,7 +66,7 @@ public class ListFetcher implements ISystem {
                 file.deleteIfExists(Const.PATH_WET + Const.FILENAME_GZ);
                 c.printDone();
             });
-            thread.runThreads(t);
+            system.runThreads(t);
         }
 
         if (!file.exist(Const.SWEAR_WORDS)) {
@@ -83,7 +83,7 @@ public class ListFetcher implements ISystem {
                 }
                 c.printDone();
             });
-            thread.runThreads(t);
+            system.runThreads(t);
         }
 
     }

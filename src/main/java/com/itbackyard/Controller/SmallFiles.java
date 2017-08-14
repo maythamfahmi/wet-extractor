@@ -4,7 +4,6 @@ import com.itbackyard.Const;
 import com.itbackyard.System.ISystem;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,7 +32,7 @@ public class SmallFiles implements ISystem {
         return SmallFiles.SmallFilesHelper.INSTANCE;
     }
 
-    public void onStart() {
+    public void start() {
         String input = Const.PATH_OUTPUT + getNewestMaster() + ".txt";
         String tinyOutput = Const.PATH_DUMMY + "/www-tiny.txt";
         String smallOutput = Const.PATH_DUMMY + "/www-small.txt";

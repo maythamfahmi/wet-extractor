@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Wet-extractor
+ * Developer Maytham on 08-08-2017
+ * 2017 © Copyright | ITBackyard ApS
+ */
 public class Statistic {
 
     public void wordStatistic(List<String> list) {

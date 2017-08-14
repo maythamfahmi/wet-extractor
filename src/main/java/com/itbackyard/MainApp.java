@@ -1,12 +1,6 @@
 package com.itbackyard;
 
 import com.itbackyard.System.ISystem;
-import sun.applet.Main;
-
-import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Wet-extractor
@@ -20,16 +14,7 @@ public class MainApp implements ISystem {
     public int numberOfDownload = 10;
 
     public static void main(String[] args) throws InterruptedException {
-
-        Thread[] t = new Thread[4];
-        t[0] = new Thread(listfetcher::onStart);
-        t[1] = new Thread(downloader::onStart);
-        t[2] = new Thread(program::onStart);
-        t[3] = new Thread(small::onStart);
-
-        thread.runThreads(t);
-
+        system.start();
     }
-
 
 }

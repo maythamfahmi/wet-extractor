@@ -3,19 +3,17 @@ package com.itbackyard.Controller;
 import com.itbackyard.Const;
 import com.itbackyard.MainApp;
 import com.itbackyard.System.ISystem;
-import sun.awt.EmbeddedFrame;
-import sun.invoke.empty.Empty;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -51,7 +49,7 @@ public class Downloader implements ISystem {
     /**
      * Download wet common crawl files from Amazon S3
      */
-    public void onStart() {
+    public void start() {
 
         ExecutorService pool = Executors.newFixedThreadPool(POOLS);
         int maxUrls = new MainApp().numberOfDownload;
@@ -62,6 +60,7 @@ public class Downloader implements ISystem {
         streamOfUrl.forEach(fullUrl -> {
             String url = Const.URL_BASE + fullUrl;
             String fileName = getFilenameFromUrl(url);
+            String filePath = Const.FILES_WET_PATH + "/" + fileName;
             if (!file.exist(Const.FILES_WET_PATH)) {
                 file.createFolder(Const.FILES_WET_PATH);
             }
@@ -69,15 +68,20 @@ public class Downloader implements ISystem {
                 file.createFile(Const.FILE_DOWNLOADED, new ArrayList<>());
             }
 
+            // feature, download method should be recalled again to check if
+            // all files are downloaded correctly
+
             // in case to check file existence
             /*|| !isFileExist(DOWNLOAD_PATH + fileName)*/
-            if (!isFileDownloaded(fileName, Const.FILE_DOWNLOADED)) {
-                pool.submit(new DownloadTask(url));
-                try {
-                    pool.awaitTermination(1000, TimeUnit.MILLISECONDS);
-                } catch (InterruptedException e) {
-                    log.write(log.getCurrentMethodName(), e.getMessage());
-                    e.printStackTrace();
+            if (file.fileSizeOnline(url) != file.fileSizeLocal(filePath)) {
+                if (!isFileDownloaded(fileName, Const.FILE_DOWNLOADED)) {
+                    pool.submit(new DownloadTask(url));
+                    try {
+                        pool.awaitTermination(1000, TimeUnit.MILLISECONDS);
+                    } catch (InterruptedException e) {
+                        log.write(log.getCurrentMethodName(), e.getMessage());
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -108,7 +112,7 @@ public class Downloader implements ISystem {
         }
     }
 
-    protected void download(String urlRaw) {
+    private void download(String urlRaw) {
         try {
             String filename = getFilenameFromUrl(urlRaw);
             URL url = new URL(urlRaw);
@@ -128,21 +132,12 @@ public class Downloader implements ISystem {
         }
     }
 
-    public String getFilenameFromUrl(String url) {
+    private String getFilenameFromUrl(String url) {
         int pos = url.lastIndexOf("wet/") + 4;
         return url.substring(pos, url.length());
     }
 
-    public boolean isFileExist(String fileName) {
-        File file = new File(fileName);
-        if (file.exists() && !file.isDirectory()) {
-            return true;
-        }
-        log.write(log.getCurrentMethodName(), "?");
-        return false;
-    }
-
-    public boolean isFileDownloaded(String fileName, String fileList) {
+    private boolean isFileDownloaded(String fileName, String fileList) {
         try {
             BufferedReader reader = new BufferedReader(
                     new FileReader(fileList)
@@ -156,23 +151,14 @@ public class Downloader implements ISystem {
             reader.close();
         } catch (IOException e) {
             log.write(log.getCurrentMethodName(), e.getMessage());
+            e.printStackTrace();
             return false;
-            //e.printStackTrace();
         }
         return false;
     }
 
-    protected void addToDownloaded(String fileName) {
-        try {
-            Files.write(Paths.get(Const.FILE_DOWNLOADED),
-                    Collections.singletonList(fileName),
-                    StandardCharsets.UTF_8,
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.APPEND);
-        } catch (IOException e) {
-            log.write(log.getCurrentMethodName(), e.getMessage());
-            e.printStackTrace();
-        }
+    private void addToDownloaded(String fileName) {
+        file.createFile(Const.FILE_DOWNLOADED, Collections.singletonList(fileName));
     }
 
 }

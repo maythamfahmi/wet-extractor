@@ -1,4 +1,4 @@
-Welcome to Crawler v2.71 release
+Welcome to Crawler v2.75 release
 ========================
 Little software to download and extract WET file content Amazon S3 [commoncrawl][1].
 
@@ -21,7 +21,11 @@ Note:
  - Each file will take 5-10 second to process and makes dummy output.
 
 - - -
-
+v.2.75 Every thing is working top 
+<br>
+.<br>
+.<br>
+.<br>
 v.2.2 Interface ISystem, FileHelper, LogData Major improvement + MainApp with (Thread for auto run)
 v.2.1 improvement
 v.2.0 code is re-written based on old concept
