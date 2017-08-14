@@ -10,13 +10,10 @@ It generates Dummy Searchable files from WET files for Search Engine Research an
 
 ## Javadocs
 
-* [3.0](http://crawler-commons.github.io/crawler-commons/0.8/)
+* [3.0]()
 * 2.0 N/A
 * 1.0 N/A
 
-# Mailing List
-
-There is a mailing list on [Google Groups](https://groups.google.com/forum/?fromgroups#!forum/crawler-commons).
 
 # Issue Tracking
 
