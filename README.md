@@ -49,10 +49,6 @@ I am glad to announce the 1.0 release of Wet extractor.
 
 > **Note:** It will take some time to process over 200 WET files.
 > Than it will generate big file under output folder.
-----------
-
-> When big file is generated, you can start SmallFiles to generate smaller files.
-Open the class it is self explainable.
 
 
 [1]: http://commoncrawl.org
