@@ -1,7 +1,6 @@
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
 <a href="url"><img src="http://dev.itbackyard.dk/wet-extractor/image/logo_wet_extractor.png" align="right" height="240" width="240" ></a>
-<br>
 
 # Overview
 
