@@ -75,5 +75,7 @@ buildNumber.properties
 
 # End of https://www.gitignore.io/api/maven,intellij+iml
 
-src/main/resources
-src/test
+src/main/resources/
+src/test/
+Archive/
+note.txt

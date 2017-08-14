@@ -111,7 +111,12 @@ public class FileHelper implements ISystem {
         return list;
     }
 
-    public boolean createFile(String fileName, byte[] bytes){
+    /**
+     * @param fileName
+     * @param bytes
+     * @return
+     */
+    public boolean createFile(String fileName, byte[] bytes) {
         try {
             Files.write(Paths.get(fileName), bytes,
                     StandardOpenOption.CREATE,
@@ -125,6 +130,11 @@ public class FileHelper implements ISystem {
         }
     }
 
+    /**
+     * @param fileName
+     * @param content
+     * @return
+     */
     public boolean createFile(String fileName, List<String> content) {
         try {
             Files.write(Paths.get(fileName), content,
@@ -139,6 +149,10 @@ public class FileHelper implements ISystem {
         }
     }
 
+    /**
+     * @param path
+     * @return
+     */
     public boolean createFolder(Path path) {
         try {
             Files.createDirectory(path);
@@ -153,14 +167,26 @@ public class FileHelper implements ISystem {
         }
     }
 
+    /**
+     * @param path
+     * @return
+     */
     public boolean createFolder(String path) {
         return createFolder(filePath(path));
     }
 
+    /**
+     * @param path
+     * @return
+     */
     public boolean deleteIfExists(String path) {
         return deleteIfExists(filePath(path));
     }
 
+    /**
+     * @param path
+     * @return
+     */
     public boolean deleteIfExists(Path path) {
         try {
             Files.deleteIfExists(path);
@@ -177,23 +203,42 @@ public class FileHelper implements ISystem {
         return false;
     }
 
-
+    /**
+     * @param path
+     * @return
+     */
     public boolean isDirectory(Path path) {
         return Files.isDirectory(path);
     }
 
+    /**
+     * @param path
+     * @return
+     */
     public boolean isDirectory(String path) {
         return isDirectory(filePath(path));
     }
 
+    /**
+     * @param path
+     * @return
+     */
     public boolean isFile(Path path) {
         return Files.isRegularFile(path);
     }
 
+    /**
+     * @param path
+     * @return
+     */
     public boolean isFile(String path) {
         return isFile(filePath(path));
     }
 
+    /**
+     * @param path
+     * @return
+     */
     public boolean exist(Path path) {
         boolean ret = false;
         try {
@@ -203,10 +248,18 @@ public class FileHelper implements ISystem {
         }
     }
 
+    /**
+     * @param path
+     * @return
+     */
     public boolean exist(String path) {
         return exist(filePath(path));
     }
 
+    /**
+     * @param path
+     * @return
+     */
     public Path filePath(String path) {
         return new File(path).toPath();
     }
@@ -239,7 +292,6 @@ public class FileHelper implements ISystem {
     }
 
     /**
-     *
      * @param url
      * @return
      */
@@ -258,7 +310,6 @@ public class FileHelper implements ISystem {
     }
 
     /**
-     *
      * @param file
      * @return
      */
@@ -271,20 +322,5 @@ public class FileHelper implements ISystem {
         }
         return file_size;
     }
-
-    public static void main(String[] args) {
-
-        FileHelper f = new FileHelper();
-
-        System.out.println(f.isDirectory("src/main/resources/log"));
-        System.out.println(f.isDirectory("src/main/resources/log/log.txt"));
-        System.out.println(f.isFile("src/main/resources/log"));
-        System.out.println(f.isFile("src/main/resources/log/log.txt"));
-        System.out.println(f.exist("src/main/resources/log/log.txt"));
-        System.out.println(f.exist("src/main/resources/lo"));
-        System.out.println(f.exist("src/main/resources/log/"));
-
-    }
-
 
 }

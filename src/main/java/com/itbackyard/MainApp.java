@@ -13,7 +13,11 @@ public class MainApp implements ISystem {
     // Each file is about 100-150Mb as GunZip.
     public int numberOfDownload = 10;
 
-    public static void main(String[] args) throws InterruptedException {
+    /**
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
         system.start();
     }
 

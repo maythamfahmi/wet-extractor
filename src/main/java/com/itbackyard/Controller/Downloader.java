@@ -112,6 +112,10 @@ public class Downloader implements ISystem {
         }
     }
 
+    /**
+     *
+     * @param urlRaw
+     */
     private void download(String urlRaw) {
         try {
             String filename = getFilenameFromUrl(urlRaw);
@@ -132,11 +136,22 @@ public class Downloader implements ISystem {
         }
     }
 
+    /**
+     *
+     * @param url
+     * @return
+     */
     private String getFilenameFromUrl(String url) {
         int pos = url.lastIndexOf("wet/") + 4;
         return url.substring(pos, url.length());
     }
 
+    /**
+     *
+     * @param fileName
+     * @param fileList
+     * @return
+     */
     private boolean isFileDownloaded(String fileName, String fileList) {
         try {
             BufferedReader reader = new BufferedReader(
@@ -157,6 +172,10 @@ public class Downloader implements ISystem {
         return false;
     }
 
+    /**
+     *
+     * @param fileName
+     */
     private void addToDownloaded(String fileName) {
         file.createFile(Const.FILE_DOWNLOADED, Collections.singletonList(fileName));
     }

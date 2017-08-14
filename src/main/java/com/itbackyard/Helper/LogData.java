@@ -79,11 +79,21 @@ public class LogData implements ISystem {
         return className.substring(removePackageName) + " -> " + methodName;
     }
 
+    /**
+     *
+     * @param action
+     * @param msg
+     * @param time
+     * @return
+     */
     private String logFormat(String action, String msg, String time) {
         if (msg.equals("")) msg = ("N/A");
         return String.format(textFormat, time + " ", action + " ", msg + " ");
     }
 
+    /**
+     *
+     */
     private void logHeader() {
         StringBuilder s = new StringBuilder();
         String header = String.format(textFormat,
