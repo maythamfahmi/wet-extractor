@@ -3,6 +3,8 @@ package com.itbackyard.Controller;
 import com.itbackyard.Const;
 import com.itbackyard.MainApp;
 import com.itbackyard.System.ISystem;
+import sun.awt.EmbeddedFrame;
+import sun.invoke.empty.Empty;
 
 import java.io.*;
 import java.net.URL;
@@ -11,7 +13,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -26,7 +30,7 @@ import java.util.stream.Stream;
 public class Downloader implements ISystem {
 
     private final int CORES = Runtime.getRuntime().availableProcessors();
-    private final int POOLS = CORES;
+    private final int POOLS = CORES / 2;
 
     private Downloader() {
     }
@@ -61,6 +65,10 @@ public class Downloader implements ISystem {
             if (!file.exist(Const.FILES_WET_PATH)) {
                 file.createFolder(Const.FILES_WET_PATH);
             }
+            if (!file.exist(Const.FILE_DOWNLOADED)) {
+                file.createFile(Const.FILE_DOWNLOADED, new ArrayList<>());
+            }
+
             // in case to check file existence
             /*|| !isFileExist(DOWNLOAD_PATH + fileName)*/
             if (!isFileDownloaded(fileName, Const.FILE_DOWNLOADED)) {
