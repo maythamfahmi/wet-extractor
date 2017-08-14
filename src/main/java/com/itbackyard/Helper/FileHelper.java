@@ -109,6 +109,20 @@ public class FileHelper implements ISystem {
         return list;
     }
 
+    public boolean createFile(String fileName, byte[] bytes){
+        try {
+            Files.write(Paths.get(fileName), bytes,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.APPEND
+            );
+            return true;
+        } catch (IOException e) {
+            log.write(log.getCurrentMethodName(), e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public boolean createFile(String fileName, List<String> content) {
         try {
             Files.write(Paths.get(fileName), content,

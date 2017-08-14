@@ -20,6 +20,8 @@ public class Const implements ISystem {
     public static final String FILENAME_GZ = "wet.paths.gz";
     public static final String EMPTY_STRING = "";
     public static final String PATH_WET = RES + "wet/";
+    public static final String PATH_DUMMY = RES + "dummy/";
+    public static final String PATH_OUTPUT = RES + "output/";
     public static final String FILES_WET_PATH = PATH_WET + "files/";
     public static final String FILE_LOG = RES + "/log/log.txt";
     public static final String FILE_DOWNLOADED = PATH_WET + "downloaded.txt";

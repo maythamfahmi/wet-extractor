@@ -1,4 +1,4 @@
-Welcome to Crawler v2.7 release
+Welcome to Crawler v2.71 release
 ========================
 Little software to download and extract WET file content Amazon S3 [commoncrawl][1].
 
@@ -14,6 +14,7 @@ How to use
 - Run and Wait. for each 1 files it takes 30-60 second.
 - It will download WET files if they are not already downloaded.
 - When download is done, it start processing files.
+- When program is done, all dummy files will be found in under src/main/resources/dummy folder
 
 Note: 
  - Download process might take time depending on your internet conneciton. 
