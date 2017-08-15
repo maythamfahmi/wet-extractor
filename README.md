@@ -19,7 +19,7 @@ It generates Dummy Searchable files from WET files for Search Engine Research an
 
 # Issue Tracking
 
-If you find an issue, please file a report [here](https://github.com/maythamfahmi/wet-extractor2/issues)
+If you find an issue, please file a report [here](https://github.com/maythamfahmi/wet-extractor3/issues)
 
 # Wet Extractor updates
 
