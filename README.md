@@ -1,4 +1,4 @@
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/maythamfahmi/wet-extractor3/blob/master/LICENSE)
 
 <a href="url"><img src="http://dev.itbackyard.dk/wet-extractor/image/logo_wet_extractor.png" align="right" height="240" width="240" ></a>
 
@@ -38,19 +38,17 @@ I am glad to announce the 1.0 release of Wet extractor.
 # How to use
 - Import the project as Maven (I use Intellij Community Edition).
 - By default set to 2 wet files, you can increase so it help creating bigger dummy file.
-- Remember! you need also to have enough storage resources.
-- Run and Wait. for each 1 files it takes 30-60 second.
-- It will download WET files if they are not already downloaded.
-- When download is done, it start processing files.
-- When program is done, all dummy files will be found in under src/main/resources/dummy folder
+- Run and Wait (see note).
+ - It downloads WET files if they are not already downloaded.
+ - When download is done, it starts processing files.
+ - When program is done, all dummy files will be found in under src/main/resources/dummy folder.
 
 > **Note:**
-> - Download process might take time depending on your internet conneciton. 
-> - Each file will take 5-10 second to process and makes dummy output.
+> - Download process might take time depending on your internet speed. 
+> - Each file will take 5-10 second to process.
+> - So if you process 200 WET files, it gone take some time.
+> - **Remember!** Depending on how many files you download, be aware to have enough storage resources.
 
-
-> **Note:** It will take some time to process over 200 WET files.
-> Than it will generate big file under output folder.
 
 
 [1]: http://commoncrawl.org
