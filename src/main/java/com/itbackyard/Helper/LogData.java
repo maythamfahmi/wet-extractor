@@ -52,7 +52,7 @@ public class LogData implements ISystem {
      * @param action
      * @param msg
      */
-    public void write(String action, String msg) {
+    public synchronized void write(String action, String msg) {
         Path pathOfFile = Paths.get(Const.FILE_LOG).getParent();
         if (!file.exist(pathOfFile)) {
             file.createFolder(pathOfFile);
@@ -63,8 +63,7 @@ public class LogData implements ISystem {
         SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
         String time = format.format(cal.getTime());
         String result = logFormat(action, msg, time);
-        List<String> content = Collections.singletonList(result);
-        file.createFile(Const.FILE_LOG, content);
+        file.createFile(Const.FILE_LOG, Collections.singletonList(result));
     }
 
     /**
@@ -80,7 +79,6 @@ public class LogData implements ISystem {
     }
 
     /**
-     *
      * @param action
      * @param msg
      * @param time

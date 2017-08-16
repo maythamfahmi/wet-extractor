@@ -46,12 +46,8 @@ public class ListFetcher implements ISystem {
 
             t[0] = new Thread(() -> {
                 String fileName = Const.PATH_WET + Const.FILENAME_GZ;
-                try {
-                    c.print("Downloading latest common crawl list...");
-                    listfetcher.download(listfetcher.lastWetUrl(), fileName);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                c.print("Downloading latest common crawl list...");
+                listfetcher.download(listfetcher.lastWetUrl(), fileName);
             });
             t[1] = new Thread(() -> {
                 c.printDone();
@@ -76,11 +72,7 @@ public class ListFetcher implements ISystem {
 
             t[0] = new Thread(() -> {
                 c.print("Downloading and saving Swearword list...");
-                try {
-                    download(Const.URL_SWEAR_WORDS, Const.SWEAR_WORDS);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                download(Const.URL_SWEAR_WORDS, Const.SWEAR_WORDS);
                 c.printDone();
             });
             system.runThreads(t);
@@ -89,12 +81,11 @@ public class ListFetcher implements ISystem {
     }
 
     /**
-     * Return url of latest gunzip wet file
+     * Return url of latest GunZip wet file, if Url fails it get empty string
      *
      * @return
-     * @throws IOException
      */
-    private String lastWetUrl() throws IOException {
+    private String lastWetUrl() {
         try {
             Document doc = Jsoup.connect(Const.URL_CC).get();
             Elements content = doc.getElementsByClass("entry-content");
@@ -110,10 +101,12 @@ public class ListFetcher implements ISystem {
     }
 
     /**
+     * Download from url and save it on disk
+     *
      * @param url
-     * @throws IOException
+     * @param fileName
      */
-    private void download(String url, String fileName) throws IOException {
+    private void download(String url, String fileName) {
         try {
             URL website = new URL(url);
             FileUtils.copyURLToFile(website, new File(fileName));
