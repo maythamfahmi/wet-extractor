@@ -44,15 +44,18 @@ Improvement
 
 # Contributors
 I welcome contributors to join developing this tool.
-Email me: maythamfahmi @ itbackyard.com
+Email me: mailto:maythamfahmi@itbackyard.com
+
+If you find bugs, please [report](https://github.com/maythamfahmi/wet-extractor/issues).
 
 # How to use
 - Import the project as Maven (I use Intellij Community Edition).
 - By default set to 2 wet files, you can increase the number in <code>Conf</code> class
-- Run and Wait (see note).
- - It downloads WET files if they are not already downloaded.
+- Run <code>MainApp</code> and Wait (see note).
+ - It starts initialize the system.
+ - Then starts to download WET files.
  - When download is done, it starts processing files.
- - When program is done, all dummy files will be found in under src/main/resources/dummy folder.
+ - When program is done, all dummy files will be found in under src/main/resources/output folder.
 
 > **Note:**
 > - Download process might take time depending on your internet speed. 
