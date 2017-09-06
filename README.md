@@ -30,7 +30,7 @@ If you find an issue, please file a report [here](https://github.com/maythamfahm
 
 ## 06th September 2017  - wet extractor 4.0 release
 
-I am glad to announce the 3.0 release of Wet extractor.
+I am glad to announce the 4.0 release of Wet extractor.
 
 Improvement
 * Improve design pattern (Builder).
