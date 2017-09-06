@@ -34,7 +34,7 @@ I am glad to announce the 4.0 release of Wet extractor.
 
 Improvement
 * Improve design pattern (Builder).
-* Bugs [fixed](https://github.com/maythamfahmi/wet-extractor/issues)
+* Bugs [fixed](https://github.com/maythamfahmi/wet-extractor/issues?q=is%3Aissue+is%3Aclosed)
 
 ## 15th August 2017  - wet extractor 3.0 released
 
