@@ -48,7 +48,7 @@ Email me: maythamfahmi @ itbackyard.com
 
 # How to use
 - Import the project as Maven (I use Intellij Community Edition).
-- By default set to 2 wet files, you can increase so it help creating bigger dummy file.
+- By default set to 2 wet files, you can increase the number in <code>Conf</code> class
 - Run and Wait (see note).
  - It downloads WET files if they are not already downloaded.
  - When download is done, it starts processing files.
