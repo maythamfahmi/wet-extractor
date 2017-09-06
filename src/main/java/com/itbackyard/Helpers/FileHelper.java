@@ -1,6 +1,10 @@
-package com.itbackyard.Helper;
+package com.itbackyard.Helpers;
 
-import com.itbackyard.System.ISystem;
+import com.itbackyard.Const;
+import com.itbackyard.System.AppSystem;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,10 +14,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -23,7 +24,7 @@ import java.util.stream.Stream;
  * Updated Maytham 08-08-2017
  * 2017 © Copyright | ITBackyard ApS
  */
-public class FileHelper implements ISystem {
+public class FileHelper extends AppSystem {
 
     private FileHelper() {
     }
@@ -61,7 +62,7 @@ public class FileHelper implements ISystem {
                 result.add(entry);
             }
         } catch (DirectoryIteratorException e) {
-            log.write(log.getCurrentMethodName(), e.getMessage());
+            log.error(getClassMethodName(), e);
             //throw e.getCause();
             e.printStackTrace();
         }
@@ -82,7 +83,7 @@ public class FileHelper implements ISystem {
             BufferedReader reader = new BufferedReader(new FileReader(downloadList));
             return reader.lines().limit(maxUrls);
         } catch (IOException e) {
-            log.write(log.getCurrentMethodName(), e.getMessage());
+            log.error(getClassMethodName(), e);
             e.printStackTrace();
             return Stream.empty();
         }
@@ -105,7 +106,7 @@ public class FileHelper implements ISystem {
             }
             reader.close();
         } catch (IOException e) {
-            log.write(log.getCurrentMethodName(), e.getMessage());
+            log.error(getClassMethodName(), e);
             e.printStackTrace();
         }
         return list;
@@ -124,7 +125,7 @@ public class FileHelper implements ISystem {
             );
             return true;
         } catch (IOException e) {
-            log.write(log.getCurrentMethodName(), e.getMessage());
+            log.error(getClassMethodName(), e);
             e.printStackTrace();
             return false;
         }
@@ -143,7 +144,7 @@ public class FileHelper implements ISystem {
                     StandardOpenOption.APPEND);
             return true;
         } catch (IOException e) {
-            log.write(log.getCurrentMethodName(), e.getMessage());
+            log.error(getClassMethodName(), e);
             e.printStackTrace();
             return false;
         }
@@ -161,7 +162,7 @@ public class FileHelper implements ISystem {
             // the directory already exists.
             return true;
         } catch (IOException e) {
-            log.write(log.getCurrentMethodName(), e.getMessage());
+            log.error(getClassMethodName(), e);
             e.printStackTrace();
             return false;
         }
@@ -196,7 +197,7 @@ public class FileHelper implements ISystem {
         } catch (DirectoryNotEmptyException x) {
             System.err.format("%s not empty%n", path);
         } catch (IOException e) {
-            log.write(log.getCurrentMethodName(), e.getMessage());
+            log.error(getClassMethodName(), e);
             e.printStackTrace();
             return false;
         }
@@ -303,7 +304,7 @@ public class FileHelper implements ISystem {
             urlConnection.connect();
             file_size = urlConnection.getContentLength();
         } catch (IOException e) {
-            log.write(log.getCurrentMethodName(), e.getMessage());
+            log.error(getClassMethodName(), e);
             e.printStackTrace();
         }
         return file_size;
@@ -311,16 +312,92 @@ public class FileHelper implements ISystem {
 
     /**
      * @param file
-     * @return
+     * @return the file size
      */
     public long fileSizeLocal(String file) {
         long file_size = 0;
         try {
             file_size = Files.size(Paths.get(file));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(getClassMethodName(), e);
+            return file_size;
         }
         return file_size;
+    }
+
+    /**
+     * @param url
+     * @return
+     */
+    public String getFilenameFromUrl(String url) {
+        int pos = url.lastIndexOf("wet/") + 4;
+        return url.substring(pos, url.length());
+    }
+
+    /**
+     * @param filepath
+     * @return
+     */
+    public String getFilename(String filepath) {
+        int pos = filepath.lastIndexOf("/") + 1;
+        return filepath.substring(pos, filepath.length());
+    }
+
+    /**
+     * @param fileName
+     * @param fileList
+     * @return
+     */
+    public boolean isFileDownloaded(String fileName, String fileList) {
+        try {
+            BufferedReader reader = new BufferedReader(
+                    new FileReader(fileList)
+            );
+            String inLine;
+            while ((inLine = reader.readLine()) != null) {
+                if (inLine.equals(fileName)) {
+                    return true;
+                }
+            }
+            reader.close();
+        } catch (IOException e) {
+            log.error(getClassMethodName(), e);
+            e.printStackTrace();
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * @param fileName
+     */
+    private void addToDownloaded(String fileName) {
+        file.createFile(Const.FILE_DOWNLOADED, Collections.singletonList(fileName));
+    }
+
+    /**
+     * Return url of latest GunZip wet file from Common Crawl Amazon S3 web page.
+     * <p>
+     * If Url fails it returns empty string.
+     * <p>
+     * It is specific method to this URL: http://commoncrawl.org/the-data/get-started
+     *
+     * @return url with updated download date.
+     * @see <a href="http://commoncrawl.org">http://commoncrawl.org</a>*
+     */
+    public String getLastWetUrl() {
+        try {
+            Document doc = Jsoup.connect(Const.URL_CC).get();
+            Elements content = doc.getElementsByClass("entry-content");
+            Elements archive = content.select("li:contains(MAIN)");
+            String last = archive.select("li").last().toString();
+            String fileName = last.substring(last.indexOf("CC-MAIN"), last.indexOf(" ")).trim();
+            return Const.URL_BASE + "crawl-data/" + fileName + "/" + Const.FILE_WET_GZ;
+        } catch (IOException e) {
+            log.error(getClassMethodName(), e);
+            e.getStackTrace();
+        }
+        return Const.EMPTY_STRING;
     }
 
 }

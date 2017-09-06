@@ -5,14 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.itbackyard</groupId>
-    <artifactId>Wet-extractor3</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
-
-    <description>
-        Wet extractor is a Java software that download and extract WET Common Crawl files content from Amazon S3. 
-        It generates Dummy Searchable files from WET files for Search Engine Research and Development purpose.
-    </description>
+    <artifactId>Wet Extractor</artifactId>
+    <version>4.0-SNAPSHOT</version>
+    <name>Wet Extractor</name>
 
     <build>
         <plugins>
@@ -48,11 +43,15 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>1.10.3</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.2</version>
         </dependency>
 
     </dependencies>
