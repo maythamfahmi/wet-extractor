@@ -16,7 +16,7 @@ Imagine you want to create dummy file with real searchable content. If you make 
 
 ## Javadocs
 
-* [4.0](http://dev.itbackyard.dk/wet-extractor/4/)
+* [4.0 dev](http://dev.itbackyard.dk/wet-extractor/4/)
 * [3.0](http://dev.itbackyard.dk/wet-extractor/3/)
 * 2.0 N/A
 * 1.0 N/A
