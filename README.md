@@ -1,7 +1,7 @@
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/maythamfahmi/wet-extractor3/blob/master/LICENSE)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/maythamfahmi/wet-extractor/blob/master/LICENSE)
 
-<a href="http://dev.itbackyard.dk/wet-extractor/">
-    <img src="http://dev.itbackyard.dk/wet-extractor/image/logo_wet_extractor.png" align="right" height="240" width="240" >
+<a href="https://github.com/maythamfahmi/wet-extractor/blob/master/LICENSE">
+    <img src="http://dev.itbackyard.dk/wet-extractor/image/logo_wet_extractor.pn" align="right" height="240" width="240" >
 </a>
 
 # Overview
