@@ -1,5 +1,6 @@
 package com.itbackyard.Handlers;
 
+import com.itbackyard.Conf;
 import com.itbackyard.Tasks.DownloaderTask;
 
 /**
@@ -21,7 +22,7 @@ public class DownloaderTaskHandler extends TaskHandler {
     public void doExecute() {
         super.doExecute();
         Thread[] t = {
-                new Thread(() -> new DownloaderTask().massDownloader(1)),
+                new Thread(() -> new DownloaderTask().massDownloader(Conf.MAX_URLS)),
         };
         this.runThreads(t);
     }

@@ -16,6 +16,11 @@ import java.util.Map;
 public class Conf implements IAppSystem {
 
     /**
+     * Maximum download urls
+     */
+    public static int MAX_URLS = 2;
+
+    /**
      * Wet extractor config
      */
     public static int MIN_WORD_LENGTH = 1;
