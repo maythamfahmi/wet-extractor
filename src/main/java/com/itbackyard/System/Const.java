@@ -1,6 +1,4 @@
-package com.itbackyard;
-
-import com.itbackyard.System.IAppSystem;
+package com.itbackyard.System;
 
 import java.text.SimpleDateFormat;
 
@@ -45,6 +43,13 @@ public class Const implements IAppSystem {
             new SimpleDateFormat("YYMMddHHmmss");
     public static final String FILE_OUTPUT_SAVE_AS = P_OUTPUT + "master_" +
             SDF.format(cal.getTime()) + ".txt";
+
+    /**
+     * Wet extractor config
+     */
+    public static final int MIN_WORD_LENGTH = 1;
+    public static int MAX_WORD_LENGTH = 30;
+    public static int TITLE_WIDTH = 70;
 
     /**
      * Colors

@@ -1,6 +1,6 @@
 package com.itbackyard.Helpers;
 
-import com.itbackyard.Const;
+import com.itbackyard.System.Const;
 import com.itbackyard.System.AppSystem;
 import com.itbackyard.System.IAppSystem;
 import org.apache.commons.io.FileUtils;
@@ -71,7 +71,7 @@ public class DownloadHelper extends AppSystem implements IAppSystem, Runnable {
                 }
             }
             file.createFile(
-                    Const.P_SYS + Const.FILE_DOWNLOADED
+                    Const.FILE_DOWNLOADED
                     , Collections.singletonList(file.getFilename(filepath))
             );
         } catch (IOException e) {

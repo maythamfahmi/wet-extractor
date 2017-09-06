@@ -1,6 +1,6 @@
 package com.itbackyard.Helpers;
 
-import com.itbackyard.Const;
+import com.itbackyard.System.Const;
 import com.itbackyard.System.AppSystem;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -392,7 +392,7 @@ public class FileHelper extends AppSystem {
             Elements archive = content.select("li:contains(MAIN)");
             String last = archive.select("li").last().toString();
             String fileName = last.substring(last.indexOf("CC-MAIN"), last.indexOf(" ")).trim();
-            return Const.URL_BASE + "crawl-data/" + fileName + "/" + Const.FILE_WET_GZ;
+            return Const.URL_BASE + "crawl-data/" + fileName + "/" + getFilename(Const.FILE_WET_GZ);
         } catch (IOException e) {
             log.error(getClassMethodName(), e);
             e.getStackTrace();

@@ -1,10 +1,14 @@
 package com.itbackyard.Handlers;
 
+import com.itbackyard.Tasks.ExtractorTask;
+import com.itbackyard.Tasks.GeneratorTask;
+
 /* "ConcreteBuilder" */
 public class GeneratorTaskHandler extends TaskHandler {
 
     @Override
     public void preExecute() {
+        task.setMessage(getClassName(1));
         super.preExecute();
     }
 
@@ -12,7 +16,7 @@ public class GeneratorTaskHandler extends TaskHandler {
     public void doExecute() {
         super.doExecute();
         Thread[] t = {
-                new Thread(),
+                new Thread(new GeneratorTask()::createSmallFiles)
         };
         this.runThreads(t);
     }

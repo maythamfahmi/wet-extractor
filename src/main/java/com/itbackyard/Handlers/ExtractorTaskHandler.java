@@ -1,10 +1,13 @@
 package com.itbackyard.Handlers;
 
+import com.itbackyard.Tasks.ExtractorTask;
+
 /* "ConcreteBuilder" */
 public class ExtractorTaskHandler extends TaskHandler {
 
     @Override
     public void preExecute() {
+        task.setMessage(getClassName(1));
         super.preExecute();
     }
 
@@ -12,7 +15,7 @@ public class ExtractorTaskHandler extends TaskHandler {
     public void doExecute() {
         super.doExecute();
         Thread[] t = {
-                new Thread(),
+                new Thread(new ExtractorTask()::extract),
         };
         this.runThreads(t);
     }

@@ -1,9 +1,11 @@
-package com.itbackyard;
+package com.itbackyard.Tasks;
 
 import com.itbackyard.Handlers.TaskHandler;
 
-/* "Director" */
-class TaskManager {
+/**
+ *
+ */
+public class TaskManager {
     private TaskHandler taskHandler;
 
     public void setTaskHandler(TaskHandler taskHandler) {

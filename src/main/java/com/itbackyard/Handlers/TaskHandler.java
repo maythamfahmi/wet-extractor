@@ -1,8 +1,8 @@
 package com.itbackyard.Handlers;
 
-import com.itbackyard.Const;
+import com.itbackyard.System.Const;
 import com.itbackyard.System.AppSystem;
-import com.itbackyard.Task;
+import com.itbackyard.Tasks.Task;
 
 /* "Abstract Builder" */
 public abstract class TaskHandler extends AppSystem {
