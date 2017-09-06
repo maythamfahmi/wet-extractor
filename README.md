@@ -30,18 +30,21 @@ If you find an issue, please file a report [here](https://github.com/maythamfahm
 
 ## 06th September 2017  - wet extractor 4.0 release
 
-Improve design pattern (Builder).
-Bugs fixed
-Initializer and Download works
-The rest still under development 
+I am glad to announce the 3.0 release of Wet extractor.
+
+Improvement
+* Improve design pattern (Builder).
+* Bugs [fixed](https://github.com/maythamfahmi/wet-extractor/issues)
 
 ## 15th August 2017  - wet extractor 3.0 released
-
-I am glad to announce the 3.0 release of Wet extractor.
 
 ## 30th June 2017  - wet extractor 2.0 released
 
 ## 1st September 2016  - wet extractor 1.0 released
+
+# Contributors
+I welcome contributors to join developing this tool.
+Email me: maythamfahmi @ itbackyard.com
 
 # How to use
 - Import the project as Maven (I use Intellij Community Edition).
