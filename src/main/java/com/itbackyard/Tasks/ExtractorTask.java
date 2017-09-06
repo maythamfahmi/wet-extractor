@@ -2,7 +2,7 @@ package com.itbackyard.Tasks;
 
 import com.itbackyard.Helpers.ContentFilter;
 import com.itbackyard.System.AppSystem;
-import com.itbackyard.System.Const;
+import com.itbackyard.Conf;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.archive.io.ArchiveReader;
@@ -12,14 +12,14 @@ import org.archive.io.warc.WARCReaderFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 /**
- * Wet-extractor
- * Developer Maytham on 07-09-2017
- * 2017 © Copyright | ITBackyard ApS
+ * Class {@code ExtractorTask} wet file extractor
+ *
+ * @author Maytham Fahmi
+ * @see AppSystem
+ * @since WET-EXTRACTOR 3.0
  */
 public class ExtractorTask extends AppSystem {
 
@@ -35,13 +35,14 @@ public class ExtractorTask extends AppSystem {
      */
     private String whiteDomain = "";
 
-    // feature multiple processing in single files and gather results in main file.
-    // improve concurrency
-
+    /**
+     * Create Swear words datastructure and call each
+     * wet file by <code>wetExtractor</code>
+     */
     public void extract() {
-        swearWordsTree = file.fileToTree(Const.FILE_SWEAR_WORDS);
+        swearWordsTree = file.fileToTree(Conf.FILE_SWEAR_WORDS);
         try {
-            file.listFiles(Const.P_WET_FILES, "*.{warc.wet.gz}")
+            file.listFiles(Conf.P_WET_FILES, "*.{warc.wet.gz}")
                     .forEach(fileName -> {
                         try {
                             counter++;
@@ -101,13 +102,13 @@ public class ExtractorTask extends AppSystem {
                         if (cf.isNotSwearWord(url) && cf.isNotSwearWord(title)) {
                             if (cf.isWhiteDomain(url)) {
                                 output.add("*PAGE:" + url);
-                                output.add(StringUtils.abbreviate(title, Const.TITLE_WIDTH).replaceAll("\\n", ""));
+                                output.add(StringUtils.abbreviate(title, Conf.TITLE_WIDTH).replaceAll("\\n", ""));
                                 String contentCleaner = content.trim().replaceAll("[^A-Za-z0-9]", " ");
                                 Arrays.stream(contentCleaner.split(" "))
                                         .filter(word -> !word.isEmpty())
                                         .filter(cf::isNotSwearWord)
-                                        .filter(word -> word.length() >= Const.MIN_WORD_LENGTH)
-                                        .filter(word -> word.length() <= Const.MAX_WORD_LENGTH)
+                                        .filter(word -> word.length() >= Conf.MIN_WORD_LENGTH)
+                                        .filter(word -> word.length() <= Conf.MAX_WORD_LENGTH)
                                         .filter(word -> !word.startsWith("http"))
                                         .forEach(word -> output.add(word.trim()));
                             }
@@ -116,18 +117,16 @@ public class ExtractorTask extends AppSystem {
                 }
             }
         });
-        createSearchFile(Const.FILE_OUTPUT_SAVE_AS, output);
+        createSearchFile(Conf.FILE_OUTPUT_SAVE_AS, output);
     }
 
     /**
+     * Create Master Dummy files
+     *
      * @param fileName
      * @param filteredContent
      */
     private void createSearchFile(String fileName, List<String> filteredContent) {
-        Path path = Paths.get(fileName).getParent();
-        if (!file.exist(path)) {
-            file.createFolder(path);
-        }
         file.createFile(fileName, filteredContent);
     }
 

@@ -7,6 +7,12 @@ import org.apache.commons.logging.LogFactory;
 
 import java.util.Calendar;
 
+/**
+ * Class {@code IAppSystem} system interface
+ *
+ * @author Maytham Fahmi
+ * @since WET-EXTRACTOR 3.0
+ */
 public interface IAppSystem {
     Log log = LogFactory.getLog("Logs");
     FileHelper file = FileHelper.getInstance();

@@ -1,13 +1,41 @@
-package com.itbackyard.System;
+package com.itbackyard;
+
+import com.itbackyard.System.IAppSystem;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Wet-extractor
- * Developer Maytham on 08-08-2017
- * 2017 © Copyright | ITBackyard ApS
+ * Class {@code Const} constant system values
+ *
+ * @author Maytham Fahmi
+ * @see IAppSystem
+ * @since WET-EXTRACTOR 3.0
  */
-public class Const implements IAppSystem {
+public class Conf implements IAppSystem {
+
+    /**
+     * Wet extractor config
+     */
+    public static int MIN_WORD_LENGTH = 1;
+    public static int MAX_WORD_LENGTH = 30;
+    public static int TITLE_WIDTH = 70;
+
+    /**
+     * Generator file config
+     *
+     * @return Map
+     */
+    public static Map<String, Integer> output() {
+        Map<String, Integer> files = new HashMap<>();
+        files.put("/www-tiny.txt", 10);
+        files.put("/www-small.txt", 1000);
+        files.put("/www-medium.txt", 10000);
+        files.put("/www-large.txt", 250000);
+        return files;
+    }
+
 
     public static final String EMPTY_STRING = "";
 
@@ -43,13 +71,6 @@ public class Const implements IAppSystem {
             new SimpleDateFormat("YYMMddHHmmss");
     public static final String FILE_OUTPUT_SAVE_AS = P_OUTPUT + "master_" +
             SDF.format(cal.getTime()) + ".txt";
-
-    /**
-     * Wet extractor config
-     */
-    public static final int MIN_WORD_LENGTH = 1;
-    public static int MAX_WORD_LENGTH = 30;
-    public static int TITLE_WIDTH = 70;
 
     /**
      * Colors

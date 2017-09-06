@@ -2,6 +2,13 @@ package com.itbackyard.Handlers;
 
 import com.itbackyard.Tasks.InitializerTask;
 
+/**
+ * Class {@code InitializerTaskHandler} initializer task caller
+ *
+ * @author Maytham Fahmi
+ * @see TaskHandler
+ * @since WET-EXTRACTOR 3.0
+ */
 public class InitializerTaskHandler extends TaskHandler {
 
     @Override

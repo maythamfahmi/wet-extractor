@@ -1,9 +1,14 @@
 package com.itbackyard.Handlers;
 
-import com.itbackyard.Tasks.ExtractorTask;
 import com.itbackyard.Tasks.GeneratorTask;
 
-/* "ConcreteBuilder" */
+/**
+ * Class {@code ExtractorTaskHandler} generator task caller
+ *
+ * @author Maytham Fahmi
+ * @see TaskHandler
+ * @since WET-EXTRACTOR 3.0
+ */
 public class GeneratorTaskHandler extends TaskHandler {
 
     @Override
@@ -25,4 +30,5 @@ public class GeneratorTaskHandler extends TaskHandler {
     public void endExecute() {
         super.endExecute();
     }
+
 }

@@ -1,16 +1,18 @@
 package com.itbackyard.System;
 
 /**
- * WetExtractor
- * Developer Maytham on 05-09-2017
- * 2017 © Copyright | ITBackyard ApS
+ * Class {@code AppSystem} application system methods
+ *
+ * @author Maytham Fahmi
+ * @see IAppSystem
+ * @since WET-EXTRACTOR 3.0
  */
 public class AppSystem implements IAppSystem {
 
     /**
      * Get current class and method name in one line
      *
-     * @return
+     * @return String
      */
     public String getClassMethodName() {
         return getClassName() + " : " + getMethodName();
@@ -19,7 +21,9 @@ public class AppSystem implements IAppSystem {
     /**
      * Get current class name in one line
      *
-     * @return
+     * @param scope depending where you call this method from so you can get the
+     *              correct class name, pass 1
+     * @return Caller class name
      */
     public String getClassName(int scope) {
         String packageName = this.getClass().getPackage().getName();
@@ -34,16 +38,16 @@ public class AppSystem implements IAppSystem {
     /**
      * Get current method name in one line
      *
-     * @return
+     * @return Caller method name
      */
     public String getMethodName() {
         return Thread.currentThread().getStackTrace()[3].getMethodName();
     }
 
     /**
-     * Accpet Array of Thread and execute sequentially.
+     * Accept Array of Thread and execute sequentially.
      *
-     * @param t
+     * @param t array of threads
      */
     public void runThreads(Thread[] t) {
         for (Thread thread : t) {

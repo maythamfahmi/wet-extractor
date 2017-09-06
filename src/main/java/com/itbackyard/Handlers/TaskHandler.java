@@ -1,10 +1,16 @@
 package com.itbackyard.Handlers;
 
-import com.itbackyard.System.Const;
+import com.itbackyard.Conf;
 import com.itbackyard.System.AppSystem;
 import com.itbackyard.Tasks.Task;
 
-/* "Abstract Builder" */
+/**
+ * Class {@code TaskHandler} is Abstract builder
+ *
+ * @author Maytham Fahmi
+ * @see TaskHandler
+ * @since WET-EXTRACTOR 3.0
+ */
 public abstract class TaskHandler extends AppSystem {
     protected Task task;
 
@@ -18,28 +24,28 @@ public abstract class TaskHandler extends AppSystem {
 
     public void preExecute() {
         System.out.println(
-                Const.ANSI_GREEN +
+                Conf.ANSI_GREEN +
                         "Starting task... " +
                         task.getMessage() +
-                        Const.ANSI_RESET
+                        Conf.ANSI_RESET
         );
     }
 
     public void doExecute() {
         System.out.println(
-                Const.ANSI_WHITE +
+                Conf.ANSI_WHITE +
                         "Executing task... " +
                         task.getMessage() +
-                        Const.ANSI_RESET
+                        Conf.ANSI_RESET
         );
     }
 
     public void endExecute() {
         System.out.println(
-                Const.ANSI_RED +
+                Conf.ANSI_RED +
                         "Ending task... " +
                         task.getMessage() +
-                        Const.ANSI_RESET
+                        Conf.ANSI_RESET
         );
     }
 }

@@ -6,9 +6,10 @@ import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 
 /**
- * Wet-extractor
- * Developer Maytham on 04-08-2017
- * 2017 © Copyright | ITBackyard ApS
+ * Class {@code GZip} GunZip extractor
+ *
+ * @author Maytham Fahmi
+ * @since WET-EXTRACTOR 3.0
  */
 public class GZip {
 
@@ -20,11 +21,10 @@ public class GZip {
     }
 
     /**
-     * <code>getInstance</code> return threadsafe instance of GZip method.
-     * this is becuase our INSTANCE declared as final.
-     * Resources http://www.journaldev.com/1377/java-singleton-design-pattern-best-practices-examples
+     * <code>getInstance</code> return thread-safe instance of GZip method.
+     * this is because our INSTANCE declared as final.
      *
-     * @return
+     * @return GZip instance
      */
     public static GZip getInstance() {
         return GZipHelper.INSTANCE;
@@ -36,7 +36,6 @@ public class GZip {
      *
      * @param inputFile  gz file
      * @param outputFile txt file
-     * @return if unzip correctly will be true, else false
      */
     public void gzUnzip(String inputFile, String outputFile) {
         byte[] buffer = new byte[1024];

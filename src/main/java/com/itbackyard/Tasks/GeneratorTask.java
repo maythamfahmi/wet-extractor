@@ -1,7 +1,7 @@
 package com.itbackyard.Tasks;
 
 import com.itbackyard.System.AppSystem;
-import com.itbackyard.System.Const;
+import com.itbackyard.Conf;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,36 +12,40 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * By Maytham on 08-09-2016.
+ * Class {@code GeneratorTask} generator class for creating small searchable files
+ *
+ * @author Maytham Fahmi
+ * @see AppSystem
+ * @since WET-EXTRACTOR 3.0
  */
 public class GeneratorTask extends AppSystem {
 
+    /**
+     * Wrapper method to create 4 searchable files with 4 different sizes
+     * File size in Kb
+     */
     public void createSmallFiles() {
-        String input = Const.P_OUTPUT + getNewestMaster() + ".txt";
-        String tinyOutput = Const.P_OUTPUT + "/www-tiny.txt";
-        String smallOutput = Const.P_OUTPUT + "/www-small.txt";
-        String mediumOutput = Const.P_OUTPUT + "/www-medium.txt";
-        String bigOutput = Const.P_OUTPUT + "/www-large.txt";
+        String input = Conf.P_OUTPUT + getNewestMaster() + ".txt";
 
-        //size in Kb
-        try {
-            createLimitedSizeFile(input, tinyOutput, 10);
-            createLimitedSizeFile(input, smallOutput, 1000);
-            createLimitedSizeFile(input, bigOutput, 250000);
-            createLimitedSizeFile(input, mediumOutput, 10000);
-        } catch (IOException e) {
-            log.error(getClassMethodName(), e);
-        }
+        Conf.output().forEach((k, v) -> {
+            try {
+                createLimitedSizeFile(input, Conf.P_OUTPUT + k, v);
+            } catch (IOException e) {
+                log.error(getClassMethodName(), e);
+            }
+        });
 
     }
 
     /**
+     * Select the latest dummy file
+     *
      * @return
      */
     private String getNewestMaster() {
         List<Path> results = null;
         try {
-            results = file.listFiles(Const.P_OUTPUT, "*.{txt}");
+            results = file.listFiles(Conf.P_OUTPUT, "*.{txt}");
         } catch (IOException e) {
             log.error(getClassMethodName(), e);
         }
@@ -60,6 +64,8 @@ public class GeneratorTask extends AppSystem {
     }
 
     /**
+     * Create files with limited size
+     *
      * @param readFile
      * @param saveAs
      * @param sizeLimit

@@ -5,22 +5,22 @@ import java.nio.charset.CharsetEncoder;
 import java.util.*;
 
 /**
- * By Maytham on 07-09-2016.
+ * Class {@code ContentFilter} content filtering methods
+ *
+ * @author Maytham Fahmi
+ * @since WET-EXTRACTOR 3.0
  */
 public class ContentFilter {
 
-    private List<String> swearWords;
     private TreeSet<String> swearWordsTree;
     private String whiteDomain;
 
-    public ContentFilter() {
-    }
-
-    public ContentFilter(List<String> swearWords, String whiteDomain) {
-        this.swearWords = swearWords;
-        this.whiteDomain = whiteDomain;
-    }
-
+    /**
+     * Constructor
+     *
+     * @param swearWordsTree Swear words data structure
+     * @param whiteDomain    Domain name
+     */
     public ContentFilter(TreeSet<String> swearWordsTree, String whiteDomain) {
         this.swearWordsTree = swearWordsTree;
         this.whiteDomain = whiteDomain;
@@ -32,8 +32,8 @@ public class ContentFilter {
     /**
      * Prevent none English content
      *
-     * @param content
-     * @return
+     * @param content text content
+     * @return boolean
      */
     public boolean isPureAscii(String content) {
         return asciiEncoder.canEncode(content);
@@ -42,8 +42,8 @@ public class ContentFilter {
     /**
      * Prevent swear word content
      *
-     * @param wordIn
-     * @return
+     * @param wordIn single word
+     * @return boolean
      */
     public boolean isNotSwearWord(String wordIn) {
         String word = wordIn.toLowerCase();
@@ -58,10 +58,11 @@ public class ContentFilter {
     /**
      * White list domains
      *
-     * @param url
-     * @return
+     * @param url url address
+     * @return boolean
      */
     public boolean isWhiteDomain(String url) {
         return whiteDomain.equals("") || url.contains(whiteDomain);
     }
+
 }

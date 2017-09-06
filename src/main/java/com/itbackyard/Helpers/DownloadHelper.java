@@ -1,6 +1,6 @@
 package com.itbackyard.Helpers;
 
-import com.itbackyard.System.Const;
+import com.itbackyard.Conf;
 import com.itbackyard.System.AppSystem;
 import com.itbackyard.System.IAppSystem;
 import org.apache.commons.io.FileUtils;
@@ -11,10 +11,12 @@ import java.net.URL;
 import java.util.Collections;
 
 /**
- * Class {@code DownloadTask} is responsible for downloading logic
+ * Class {@code DownloadTask} single downloading thread
  *
  * @author Maytham Fahmi
  * @see IAppSystem
+ * @see IAppSystem
+ * @see Runnable
  * @since WET-EXTRACTOR 3.0
  */
 public class DownloadHelper extends AppSystem implements IAppSystem, Runnable {
@@ -70,10 +72,7 @@ public class DownloadHelper extends AppSystem implements IAppSystem, Runnable {
                     System.out.print("\b\b\b\b\b\b Retry!");
                 }
             }
-            file.createFile(
-                    Const.FILE_DOWNLOADED
-                    , Collections.singletonList(file.getFilename(filepath))
-            );
+            file.addToDownloaded(file.getFilename(filepath));
         } catch (IOException e) {
             log.error(getClassMethodName(), e);
         }

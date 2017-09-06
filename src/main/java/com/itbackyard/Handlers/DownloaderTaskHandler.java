@@ -2,7 +2,13 @@ package com.itbackyard.Handlers;
 
 import com.itbackyard.Tasks.DownloaderTask;
 
-/* "ConcreteBuilder" */
+/**
+ * Class {@code DownloaderTaskHandler} download task caller
+ *
+ * @author Maytham Fahmi
+ * @see TaskHandler
+ * @since WET-EXTRACTOR 3.0
+ */
 public class DownloaderTaskHandler extends TaskHandler {
 
     @Override
@@ -24,4 +30,5 @@ public class DownloaderTaskHandler extends TaskHandler {
     public void endExecute() {
         super.endExecute();
     }
+
 }

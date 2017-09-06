@@ -1,7 +1,8 @@
 package com.itbackyard.Helpers;
 
-import com.itbackyard.System.Const;
+import com.itbackyard.Conf;
 import com.itbackyard.System.AppSystem;
+import com.itbackyard.System.IAppSystem;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -19,40 +20,41 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Wet-extractor
- * Developer Maytham on 06-09-2016
- * Updated Maytham 08-08-2017
- * 2017 © Copyright | ITBackyard ApS
+ * Class {@code FileHelper} singleton class contains file methods
+ *
+ * @author Maytham Fahmi
+ * @see IAppSystem
+ * @since WET-EXTRACTOR 3.0
  */
 public class FileHelper extends AppSystem {
 
     private FileHelper() {
     }
 
-    private static class FileHelperHelper {
+    private static class ClassHelper {
         private static final FileHelper INSTANCE = new FileHelper();
     }
 
     /**
      * FileHelper Singleton
      *
-     * @return
+     * @return FileHelper instance
      */
     public static FileHelper getInstance() {
-        return FileHelper.FileHelperHelper.INSTANCE;
+        return FileHelper.ClassHelper.INSTANCE;
     }
 
     /**
-     * To process filePath with text extention than pass "*.{txt}"<br>
+     * To process filePath with text extension than pass "*.{txt}"<br>
      * to <code>fileType</code>.
      * <br>
      * Txt: "*.{txt}"<br>
      * Wet: "*.{warc.wet.gz}"
      *
-     * @param path
-     * @param fileType
-     * @return
-     * @throws IOException
+     * @param path     path source
+     * @param fileType file extension
+     * @return List of files in specific path
+     * @throws IOException throws exception
      */
     public List<Path> listFiles(String path, String fileType) throws IOException {
 
@@ -63,8 +65,6 @@ public class FileHelper extends AppSystem {
             }
         } catch (DirectoryIteratorException e) {
             log.error(getClassMethodName(), e);
-            //throw e.getCause();
-            e.printStackTrace();
         }
         return result;
     }
@@ -74,9 +74,9 @@ public class FileHelper extends AppSystem {
      * <br>
      * Set <code>maxUrls</code> to limit the number of urls
      *
-     * @param downloadList
-     * @param maxUrls
-     * @return
+     * @param downloadList download list
+     * @param maxUrls      maximum urls to be downloaded
+     * @return stream of url list
      */
     public Stream<String> urlList(String downloadList, int maxUrls) {
         try {
@@ -84,7 +84,6 @@ public class FileHelper extends AppSystem {
             return reader.lines().limit(maxUrls);
         } catch (IOException e) {
             log.error(getClassMethodName(), e);
-            e.printStackTrace();
             return Stream.empty();
         }
     }
@@ -92,14 +91,14 @@ public class FileHelper extends AppSystem {
     /**
      * Return list of string from filePath lines
      *
-     * @param fileName
-     * @return
+     * @param filename file name
+     * @return list of string from file
      */
-    public List<String> linesReader(String fileName) {
+    public List<String> linesReader(String filename) {
         List<String> list = new ArrayList<>();
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
             String inLine;
             while ((inLine = reader.readLine()) != null) {
                 list.add(inLine);
@@ -107,52 +106,49 @@ public class FileHelper extends AppSystem {
             reader.close();
         } catch (IOException e) {
             log.error(getClassMethodName(), e);
-            e.printStackTrace();
         }
         return list;
     }
 
     /**
-     * @param fileName
-     * @param bytes
-     * @return
+     * @param filename file name
+     * @param bytes    bytes
+     * @return boolean
      */
-    public boolean createFile(String fileName, byte[] bytes) {
+    public boolean createFile(String filename, byte[] bytes) {
         try {
-            Files.write(Paths.get(fileName), bytes,
+            Files.write(Paths.get(filename), bytes,
                     StandardOpenOption.CREATE,
                     StandardOpenOption.APPEND
             );
             return true;
         } catch (IOException e) {
             log.error(getClassMethodName(), e);
-            e.printStackTrace();
             return false;
         }
     }
 
     /**
-     * @param fileName
-     * @param content
-     * @return
+     * @param filename file name
+     * @param content  content
+     * @return boolean
      */
-    public boolean createFile(String fileName, List<String> content) {
+    public boolean createFile(String filename, List<String> content) {
         try {
-            Files.write(Paths.get(fileName), content,
+            Files.write(Paths.get(filename), content,
                     StandardCharsets.UTF_8,
                     StandardOpenOption.CREATE,
                     StandardOpenOption.APPEND);
             return true;
         } catch (IOException e) {
             log.error(getClassMethodName(), e);
-            e.printStackTrace();
             return false;
         }
     }
 
     /**
-     * @param path
-     * @return
+     * @param path path source
+     * @return boolean
      */
     public boolean createFolder(Path path) {
         try {
@@ -163,30 +159,29 @@ public class FileHelper extends AppSystem {
             return true;
         } catch (IOException e) {
             log.error(getClassMethodName(), e);
-            e.printStackTrace();
             return false;
         }
     }
 
     /**
-     * @param path
-     * @return
+     * @param path path source
+     * @return boolean
      */
     public boolean createFolder(String path) {
         return createFolder(filePath(path));
     }
 
     /**
-     * @param path
-     * @return
+     * @param path path source
+     * @return boolean
      */
     public boolean deleteIfExists(String path) {
         return deleteIfExists(filePath(path));
     }
 
     /**
-     * @param path
-     * @return
+     * @param path path source
+     * @return boolean
      */
     public boolean deleteIfExists(Path path) {
         try {
@@ -198,47 +193,46 @@ public class FileHelper extends AppSystem {
             System.err.format("%s not empty%n", path);
         } catch (IOException e) {
             log.error(getClassMethodName(), e);
-            e.printStackTrace();
             return false;
         }
         return false;
     }
 
     /**
-     * @param path
-     * @return
+     * @param path path source
+     * @return boolean
      */
     public boolean isDirectory(Path path) {
         return Files.isDirectory(path);
     }
 
     /**
-     * @param path
-     * @return
+     * @param path path source
+     * @return boolean
      */
     public boolean isDirectory(String path) {
         return isDirectory(filePath(path));
     }
 
     /**
-     * @param path
-     * @return
+     * @param path path source
+     * @return boolean
      */
     public boolean isFile(Path path) {
         return Files.isRegularFile(path);
     }
 
     /**
-     * @param path
-     * @return
+     * @param path path source
+     * @return boolean
      */
     public boolean isFile(String path) {
         return isFile(filePath(path));
     }
 
     /**
-     * @param path
-     * @return
+     * @param path path source
+     * @return boolean
      */
     public boolean exist(Path path) {
         boolean ret = false;
@@ -250,51 +244,51 @@ public class FileHelper extends AppSystem {
     }
 
     /**
-     * @param path
-     * @return
+     * @param path path source
+     * @return boolean
      */
     public boolean exist(String path) {
         return exist(filePath(path));
     }
 
     /**
-     * @param path
-     * @return
+     * @param path path source
+     * @return boolean
      */
     public Path filePath(String path) {
         return new File(path).toPath();
     }
 
     /**
-     * @param fileName
-     * @return
+     * @param filename file name
+     * @return boolean
      */
-    public TreeSet<String> fileToTree(String fileName) {
-        List<String> lst = file.linesReader(fileName);
+    public TreeSet<String> fileToTree(String filename) {
+        List<String> lst = file.linesReader(filename);
         TreeSet<String> tree = new TreeSet<>(lst);
         return tree;
     }
 
     /**
-     * @param fileName
-     * @return
+     * @param filename file name
+     * @return boolean
      */
-    public Map<String, String> fileToMap(String fileName) {
-        return file.linesReader(fileName).stream()
+    public Map<String, String> fileToMap(String filename) {
+        return file.linesReader(filename).stream()
                 .collect(Collectors.toMap(String::new, item -> item));
     }
 
     /**
-     * @param fileName
-     * @return
+     * @param filename file name
+     * @return convert file to list of String
      */
-    public List<String> fileToList(String fileName) {
-        return file.linesReader(fileName);
+    public List<String> fileToList(String filename) {
+        return file.linesReader(filename);
     }
 
     /**
-     * @param url
-     * @return
+     * @param url url
+     * @return file size online
      */
     public long fileSizeOnline(String url) {
         long file_size = 0;
@@ -305,19 +299,18 @@ public class FileHelper extends AppSystem {
             file_size = urlConnection.getContentLength();
         } catch (IOException e) {
             log.error(getClassMethodName(), e);
-            e.printStackTrace();
         }
         return file_size;
     }
 
     /**
-     * @param file
-     * @return the file size
+     * @param filename file name
+     * @return file size local
      */
-    public long fileSizeLocal(String file) {
+    public long fileSizeLocal(String filename) {
         long file_size = 0;
         try {
-            file_size = Files.size(Paths.get(file));
+            file_size = Files.size(Paths.get(filename));
         } catch (IOException e) {
             log.error(getClassMethodName(), e);
             return file_size;
@@ -326,8 +319,8 @@ public class FileHelper extends AppSystem {
     }
 
     /**
-     * @param url
-     * @return
+     * @param url url
+     * @return file name
      */
     public String getFilenameFromUrl(String url) {
         int pos = url.lastIndexOf("wet/") + 4;
@@ -335,8 +328,8 @@ public class FileHelper extends AppSystem {
     }
 
     /**
-     * @param filepath
-     * @return
+     * @param filepath full path source
+     * @return get file name
      */
     public String getFilename(String filepath) {
         int pos = filepath.lastIndexOf("/") + 1;
@@ -344,35 +337,34 @@ public class FileHelper extends AppSystem {
     }
 
     /**
-     * @param fileName
-     * @param fileList
-     * @return
+     * @param filename file name
+     * @param fileList file list
+     * @return boolean
      */
-    public boolean isFileDownloaded(String fileName, String fileList) {
+    public boolean isFileDownloaded(String filename, String fileList) {
         try {
             BufferedReader reader = new BufferedReader(
                     new FileReader(fileList)
             );
             String inLine;
             while ((inLine = reader.readLine()) != null) {
-                if (inLine.equals(fileName)) {
+                if (inLine.equals(filename)) {
                     return true;
                 }
             }
             reader.close();
         } catch (IOException e) {
             log.error(getClassMethodName(), e);
-            e.printStackTrace();
             return false;
         }
         return false;
     }
 
     /**
-     * @param fileName
+     * @param filename file name
      */
-    private void addToDownloaded(String fileName) {
-        file.createFile(Const.FILE_DOWNLOADED, Collections.singletonList(fileName));
+    public void addToDownloaded(String filename) {
+        file.createFile(Conf.FILE_DOWNLOADED, Collections.singletonList(filename));
     }
 
     /**
@@ -383,21 +375,19 @@ public class FileHelper extends AppSystem {
      * It is specific method to this URL: http://commoncrawl.org/the-data/get-started
      *
      * @return url with updated download date.
-     * @see <a href="http://commoncrawl.org">http://commoncrawl.org</a>*
      */
     public String getLastWetUrl() {
         try {
-            Document doc = Jsoup.connect(Const.URL_CC).get();
+            Document doc = Jsoup.connect(Conf.URL_CC).get();
             Elements content = doc.getElementsByClass("entry-content");
             Elements archive = content.select("li:contains(MAIN)");
             String last = archive.select("li").last().toString();
             String fileName = last.substring(last.indexOf("CC-MAIN"), last.indexOf(" ")).trim();
-            return Const.URL_BASE + "crawl-data/" + fileName + "/" + getFilename(Const.FILE_WET_GZ);
+            return Conf.URL_BASE + "crawl-data/" + fileName + "/" + getFilename(Conf.FILE_WET_GZ);
         } catch (IOException e) {
             log.error(getClassMethodName(), e);
-            e.getStackTrace();
         }
-        return Const.EMPTY_STRING;
+        return Conf.EMPTY_STRING;
     }
 
 }
