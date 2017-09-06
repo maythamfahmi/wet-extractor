@@ -4,8 +4,11 @@
 
 # Overview
 
-Wet Extractor is a little Java software that download latest, extract WET [Common Crawl][1] files content from Amazon S3 and it generates content file as Dummy Searchable files from WET files for Search Engine Research and Development purpose.
+Wet Extractor is a little Java software that download latest WET [Common Crawl][1] files content from Amazon S3. It extracts and generates a Dummy file with real Searchable content for Search Engine Research and Development purpose.
 
+# Why Wet Extractor
+
+Imagine you want to create dummy file with real searchable content. If you make your own crawler, it gone take time, a lot of time. Wet Extractor will do all this for you in matter of minutes.
 
 # User Documentation
 
