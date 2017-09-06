@@ -44,7 +44,8 @@ Improvement
 
 # Contributors
 I welcome contributors to join developing this tool.
-Email me: mailto:maythamfahmi@itbackyard.com
+
+If you like so, please email me: mailto:maythamfahmi@itbackyard.com.
 
 If you find bugs, please [report](https://github.com/maythamfahmi/wet-extractor/issues).
 
