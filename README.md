@@ -1,6 +1,4 @@
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/maythamfahmi/wet-extractor/blob/master/LICENSE)
-
-[![Build Status](https://travis-ci.org/maythamfahmi/wet-extractor.svg?branch=master)](https://travis-ci.org/maythamfahmi/wet-extractor)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/maythamfahmi/wet-extractor/blob/master/LICENSE) [![Build Status](https://travis-ci.org/maythamfahmi/wet-extractor.svg?branch=master)](https://travis-ci.org/maythamfahmi/wet-extractor)
 
 <a href="https://github.com/maythamfahmi/wet-extractor/blob/master/LICENSE">
     <img src="http://dev.itbackyard.dk/wet-extractor/image/logo_wet_extractor_2017.png" align="right" height="240" width="240" >
