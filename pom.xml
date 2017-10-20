@@ -26,7 +26,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.itbackyard</groupId>
-    <artifactId>Wet Extractor</artifactId>
+    <artifactId>Wet-Extractor</artifactId>
     <version>4.0-development</version>
     <packaging>jar</packaging>
 
